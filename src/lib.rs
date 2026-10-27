@@ -13,6 +13,7 @@ pub mod canonical;
 pub mod charter;
 pub mod check;
 pub mod devtool;
+pub mod follow;
 pub mod hex;
 pub mod memo;
 pub mod paylink;
@@ -155,8 +156,8 @@ fn check(a: &CheckArgs, env: &Env) -> Result<(i32, String), String> {
     let me = pick_member(&verified, a.member.as_ref(), key.as_ref())?;
     let network = verified.charter.network;
 
-    let (view, save) = match &a.view {
-        ViewSource::Snapshot(p) => (source::load_snapshot(p)?, None),
+    let live = match &a.view {
+        ViewSource::Snapshot(_) => None,
         ViewSource::Live(l) => {
             let ufvk = match &l.ufvk {
                 UfvkFrom::File(p) => read(p, "viewing key file")?,
@@ -171,28 +172,19 @@ fn check(a: &CheckArgs, env: &Env) -> Result<(i32, String), String> {
                     network.name()
                 ));
             }
-            let live = source::LiveArgs {
-                ufvk,
-                birthday: l.birthday,
-                wallet_dir: l.wallet_dir.clone(),
-                devtool: l.devtool.clone(),
-                server: l.server.clone(),
-                connection: l.connection.clone(),
-            };
-            (source::scan(&live)?, l.save_snapshot.clone())
+            Some((
+                source::LiveArgs {
+                    ufvk,
+                    birthday: l.birthday,
+                    wallet_dir: l.wallet_dir.clone(),
+                    devtool: l.devtool.clone(),
+                    server: l.server.clone(),
+                    connection: l.connection.clone(),
+                },
+                l,
+            ))
         }
     };
-    if view.network != network {
-        return Err(format!(
-            "the snapshot is from {}, the charter is on {}",
-            view.network.name(),
-            network.name()
-        ));
-    }
-    if let Some(path) = &save {
-        std::fs::write(path, source::to_snapshot(&view, None))
-            .map_err(|e| format!("cannot write {}: {e}", path.display()))?;
-    }
 
     let price = match (a.price_zat, link_price) {
         (Some(p), _) => Some((p, PriceFrom::Flag)),
@@ -206,7 +198,49 @@ fn check(a: &CheckArgs, env: &Env) -> Result<(i32, String), String> {
         price,
         min_conf: a.min_conf,
     };
-    let result = check::run(&params, &view)?;
+    let observe = || -> Result<(source::View, check::Check), String> {
+        let view = match (&a.view, &live) {
+            (ViewSource::Snapshot(p), _) => source::load_snapshot(p)?,
+            (_, Some((args, l))) => {
+                let view = source::scan(args)?;
+                if let Some(path) = &l.save_snapshot {
+                    std::fs::write(path, source::to_snapshot(&view, None))
+                        .map_err(|e| format!("cannot write {}: {e}", path.display()))?;
+                }
+                view
+            }
+            (ViewSource::Live(_), None) => unreachable!("live arguments are prepared above"),
+        };
+        if view.network != network {
+            return Err(format!(
+                "the snapshot is from {}, the charter is on {}",
+                view.network.name(),
+                network.name()
+            ));
+        }
+        let result = check::run(&params, &view)?;
+        Ok((view, result))
+    };
+    let follow = live.as_ref().and_then(|(_, l)| l.follow);
+    let (view, result) = match follow {
+        None => observe()?,
+        Some(f) => follow::until_settled(
+            observe,
+            std::time::Duration::from_secs(f.interval_secs),
+            std::time::Duration::from_secs(60 * f.max_wait_mins),
+            |v, c| {
+                // Progress goes to stderr straight away; stdout keeps only the final report.
+                eprintln!(
+                    "{}  {} at block {}; scanning again in {} s (Ctrl+C to stop)",
+                    time::rfc3339(time::now_secs(None)),
+                    c.verdict.word(),
+                    v.tip_height,
+                    f.interval_secs
+                );
+            },
+            std::thread::sleep,
+        )?,
+    };
 
     let receipt = match (&a.receipt, &key, a.order.as_deref()) {
         (Some(path), Some(key), Some(order)) => {

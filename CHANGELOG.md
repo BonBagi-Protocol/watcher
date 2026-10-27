@@ -13,6 +13,7 @@ First release, for ZECATHON 2026.
   through a watch-only `zcash-devtool` wallet (`b532d4c`), with `--server`, `--connection tor`
   and `--save-snapshot`. The viewing key is read from a file or `BONBAGI_UFVK`, never from the
   command line.
+- `--follow <SECONDS>`: keep scanning one order until it is PAID or MISMATCH (`--max-wait`).
 - Charter from a file or straight from a pay link's `#c=` fragment.
 - Receipts: `check --receipt` signs "my share of order X arrived" with the member's charter key;
   `verify-receipt` checks one offline. Verifiable in TypeScript with `@bonbagi/core`.
