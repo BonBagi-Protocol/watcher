@@ -66,11 +66,14 @@ cargo run --release -- check --link "$(cat examples/testnet/paylink.txt)" \
 3. **Run** (the first run needs `--birthday`: the block height when your wallet was created, or any block before your first BonBagi payment):
 
 ```bash
-docker run --rm -v "$PWD:/data" -w /data --user "$(id -u):$(id -g)" ghcr.io/bonbagi/watcher:0.1.0 check \
+docker run --rm -v "$PWD:/data" -w /data -e HOME=/data --user "$(id -u):$(id -g)" \
+  ghcr.io/bonbagi/watcher:0.1.0 check \
   --link "https://bonbagi.vercel.app/pay.html#c=…" \
   --ufvk-file ufvk.txt --key-file bonbagi-private-key.txt \
-  --order ord-k7m2qx9p --birthday 3100000 --receipt receipt.json
+  --order ord-k7m2qx9p --birthday <HEIGHT> --receipt receipt.json
 ```
+
+Replace the link, the order and `<HEIGHT>` with yours. A birthday far in the past works but makes the first sync longer.
 
 The watch-only wallet is kept in `./bonbagi-watch-<network>-<hash>/`, so later runs only sync new blocks. Add `--connection tor` to hide your IP address from the lightwalletd server. `--json` gives a machine-readable report.
 
