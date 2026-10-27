@@ -153,7 +153,7 @@ Nothing else is sent: no telemetry, no BonBagi server, no API. The viewing key i
 |---|---|
 | The charter rules match the web app byte for byte: 7 conformance tests replay vectors generated from `@bonbagi/core` (canonical bytes, hashes, ZIP 215 signatures and identical Ed25519 signatures, split amounts and error messages, memos, pay links). | The **testnet example is constructed**: real charter, amounts and memos from `@bonbagi/core`, placeholder txids, no real wallet behind it. |
 | The live scan runs end to end on **Zcash testnet** in CI: a fresh viewing key is scanned through a real lightwalletd with `zcash-devtool`, and the watcher answers NOT FOUND, as it must for an empty wallet (`image` workflow, step "live scan on testnet"). | A live scan of a **real BonBagi payment** is not recorded here yet. It needs a member's viewing key of a wallet that was paid; the CI step "recorded live check" runs once those repository variables are set. |
-| 44 tests, golden outputs checked from the release binary and inside the Docker image, gitleaks over the full history. | The image on GHCR becomes pullable without a login when the repository is public. Until then, `docker build -t bonbagi-watcher .` and use `bonbagi-watcher` instead of `ghcr.io/bonbagi/watcher:0.1.0`. |
+| 49 tests, golden outputs checked from the release binary and inside the Docker image, gitleaks over the full history. | The image on GHCR becomes pullable without a login when the repository is public. Until then, `docker build -t bonbagi-watcher .` and use `bonbagi-watcher` instead of `ghcr.io/bonbagi/watcher:0.1.0`. |
 
 ## Conformance with the web app
 

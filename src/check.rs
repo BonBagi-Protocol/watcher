@@ -355,6 +355,8 @@ fn summary(p: &Params, view: &View, rows: &[&Row], verdict: Verdict, net: Networ
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::charter::{parse_charter_file, verify};
+    use crate::source::{Origin, Received};
 
     #[test]
     fn percentages() {
@@ -362,5 +364,135 @@ mod tests {
         assert_eq!(pct(3333), "33.33");
         assert_eq!(pct(3350), "33.5");
         assert_eq!(pct(5), "0.05");
+    }
+
+    /// The example charter: member 1 "Dex" 60%, member 2 "Hans" 40%, testnet.
+    fn verified() -> Verified {
+        let text = include_str!("../examples/testnet/charter.json");
+        verify(&parse_charter_file(text).unwrap()).unwrap()
+    }
+
+    fn out(order: &str, member: u32, value_zat: u64, height: Option<u32>) -> Received {
+        Received {
+            txid: format!("{:0>64}", order.len()),
+            height,
+            output_index: 0,
+            pool: "Orchard".into(),
+            value_zat,
+            memo: Some(format!(
+                "bonbagi:v1 o={order} c=a18c7faf6f559412 m={member}/2"
+            )),
+            expired: false,
+        }
+    }
+
+    fn view(outputs: Vec<Received>) -> View {
+        View {
+            network: Network::Test,
+            tip_height: 100,
+            outputs,
+            origin: Origin::Snapshot {
+                path: "t".into(),
+                note: None,
+            },
+        }
+    }
+
+    fn params<'a>(v: &'a Verified, order: Option<&'a str>) -> Params<'a> {
+        Params {
+            verified: v,
+            me: 0,
+            order,
+            price: None,
+            min_conf: 1,
+        }
+    }
+
+    #[test]
+    fn a_transparent_output_is_a_mismatch_even_with_the_right_amount() {
+        let v = verified();
+        let mut o = out("ord-1", 1, 180_000, Some(90));
+        o.pool = "Transparent".into();
+        let c = run(&params(&v, Some("ord-1")), &view(vec![o])).unwrap();
+        assert_eq!(c.verdict, Verdict::Mismatch);
+        assert!(c.rows[0].problems[0].contains("transparent"));
+    }
+
+    #[test]
+    fn confirmations_and_expiry() {
+        let v = verified();
+        let p = Params {
+            min_conf: 3,
+            ..params(&v, Some("ord-1"))
+        };
+        // Mined at the tip: 1 confirmation of 3.
+        let c = run(&p, &view(vec![out("ord-1", 1, 180_000, Some(100))])).unwrap();
+        assert_eq!((c.verdict, c.rows[0].confirmations), (Verdict::Pending, 1));
+        assert!(c.summary.contains("1 of 3 confirmations"));
+        let c = run(&p, &view(vec![out("ord-1", 1, 180_000, Some(98))])).unwrap();
+        assert_eq!(c.verdict, Verdict::Paid);
+        // Never mined and expired: it will not arrive.
+        let mut gone = out("ord-1", 1, 180_000, None);
+        gone.expired = true;
+        let c = run(&p, &view(vec![gone])).unwrap();
+        assert_eq!(
+            (c.verdict, c.rows[0].status),
+            (Verdict::NotFound, Status::Expired)
+        );
+    }
+
+    #[test]
+    fn an_order_paid_twice_is_noted() {
+        let v = verified();
+        let c = run(
+            &params(&v, None),
+            &view(vec![
+                out("ord-1", 1, 180_000, Some(90)),
+                out("ord-1", 1, 180_000, Some(91)),
+            ]),
+        )
+        .unwrap();
+        assert_eq!(c.verdict, Verdict::Paid);
+        assert!(c.rows.iter().all(|r| r.notes[0].contains("2 outputs")));
+    }
+
+    #[test]
+    fn prices_from_a_flag_are_strict_and_from_a_link_are_a_hint() {
+        let v = verified();
+        let paid_less = view(vec![out("ord-1", 1, 60_000, Some(90))]);
+        let with = |from| Params {
+            price: Some((300_000, from)),
+            ..params(&v, Some("ord-1"))
+        };
+        // --price 0.003: 0.0006 is not 60% of it.
+        let c = run(&with(PriceFrom::Flag), &paid_less).unwrap();
+        assert_eq!(c.verdict, Verdict::Mismatch);
+        assert!(c.rows[0].problems[0].contains("expected 0.0018 TAZ"));
+        // Pay link price 0.003: the buyer paid 0.001 instead, and 0.0006 is right for that.
+        let c = run(&with(PriceFrom::Link), &paid_less).unwrap();
+        assert_eq!(c.verdict, Verdict::Paid);
+        assert!(c.rows[0].notes[0].contains("0.001 TAZ instead of the pay link's 0.003 TAZ"));
+        // A price this charter cannot split (below the minimum share) is an input error.
+        let tiny = Params {
+            price: Some((1_000, PriceFrom::Flag)),
+            ..params(&v, Some("ord-1"))
+        };
+        assert!(run(&tiny, &paid_less)
+            .unwrap_err()
+            .contains("cannot be split"));
+    }
+
+    #[test]
+    fn other_charters_and_plain_memos_are_left_out() {
+        let v = verified();
+        let mut foreign = out("ord-1", 1, 180_000, Some(90));
+        foreign.memo = Some("bonbagi:v1 o=ord-1 c=0000000000000000 m=1/2".into());
+        let mut plain = out("ord-2", 1, 180_000, Some(90));
+        plain.memo = Some("thanks".into());
+        let c = run(&params(&v, None), &view(vec![foreign, plain])).unwrap();
+        assert_eq!(
+            (c.rows.len(), c.other_charters, c.verdict),
+            (0, 1, Verdict::NotFound)
+        );
     }
 }
