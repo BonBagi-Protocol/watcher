@@ -1,0 +1,56 @@
+{
+  "bonbagi_snapshot": 1,
+  "network": "test",
+  "tip_height": 4540420,
+  "note": "Constructed example, not a real wallet: what member 1 (Dex) of charter.json would see. Charter, amounts and memos come from @bonbagi/core (conformance/vectors.json); txids are placeholders.",
+  "outputs": [
+    {
+      "txid": "95ad566a4093ec8b90bdb835edc903fd70b405d82c9a54c8103e875b87a3d6de",
+      "height": 4540210,
+      "output_index": 0,
+      "pool": "Ironwood",
+      "value_zat": 180000,
+      "memo": "bonbagi:v1 o=ord-k7m2qx9p c=a18c7faf6f559412 m=1/2"
+    },
+    {
+      "txid": "a14b08c08861482e0a282ca24827789c54e977cde04842d90e3d01e32143094c",
+      "height": 4540388,
+      "output_index": 1,
+      "pool": "Orchard",
+      "value_zat": 60000,
+      "memo": "bonbagi:v1 o=ord-9xq2ttmh c=a18c7faf6f559412 m=1/2"
+    },
+    {
+      "txid": "99616b621304703d8cf7644efa3b191ab9040f5dc8e8dc465765dcf639880236",
+      "height": 4540401,
+      "output_index": 0,
+      "pool": "Ironwood",
+      "value_zat": 120000,
+      "memo": "bonbagi:v1 o=ord-swapped1 c=a18c7faf6f559412 m=2/2"
+    },
+    {
+      "txid": "6859214801541331230e32fb0c84e3f931e1e476d6d7c15b5d6c9466fe654c6a",
+      "height": null,
+      "output_index": 0,
+      "pool": "Ironwood",
+      "value_zat": 90000,
+      "memo": "bonbagi:v1 o=ord-pnd3w8kq c=a18c7faf6f559412 m=1/2"
+    },
+    {
+      "txid": "37d4fb597ddbec09de96b21ba349f05a380b4447b55503f4be74f06e19b91a1a",
+      "height": 4540100,
+      "output_index": 0,
+      "pool": "Orchard",
+      "value_zat": 40000,
+      "memo": "bonbagi:v1 o=ord-c4fe0001 c=7b780a587c78856b m=1/3"
+    },
+    {
+      "txid": "54cdd6654448c1f31eddeacf8c1fc4db101f50db53bc721af333af5d3909a0ad",
+      "height": 4539990,
+      "output_index": 0,
+      "pool": "Sapling",
+      "value_zat": 500000,
+      "memo": "thanks for the coffee"
+    }
+  ]
+}

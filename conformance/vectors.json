@@ -1,0 +1,442 @@
+{
+  "about": "Conformance vectors from @bonbagi/core (the TypeScript the BonBagi web app runs). Regenerate with conformance/generate.ts; the Rust tests replay them.",
+  "keys": [
+    {
+      "priv": "0101010101010101010101010101010101010101010101010101010101010101",
+      "pub": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c"
+    },
+    {
+      "priv": "0202020202020202020202020202020202020202020202020202020202020202",
+      "pub": "8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394"
+    },
+    {
+      "priv": "0303030303030303030303030303030303030303030303030303030303030303",
+      "pub": "ed4928c628d1c2c6eae90338905995612959273a5c63f93636c14614ac8737d1"
+    }
+  ],
+  "charters": [
+    {
+      "name": "demo2",
+      "file": {
+        "charter": {
+          "bonbagi": 1,
+          "network": "test",
+          "title": "Kopi Kita demo",
+          "minShareZat": "10000",
+          "members": [
+            {
+              "label": "Dex",
+              "address": "utest138l662rss60ru6vz3mj3999pvxvseu3l4y6hmp2mevkvx7gly74l5tlpugtv6tqy9yrmgd4kakfptd8jlsr7vn67r03ls3wv67nu",
+              "bps": 6000,
+              "pubkey": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c"
+            },
+            {
+              "label": "Hans",
+              "address": "utest18lm2cahwylrnks0s39n7ah60jpd0x7qmkllyh0kz68rcqsutraqzpyla8qf4pghcrdmqk4gcrmpwprrhl7j93zyfmxsf7p5qyqgc",
+              "bps": 4000,
+              "pubkey": "8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394"
+            }
+          ]
+        },
+        "signatures": [
+          {
+            "pubkey": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c",
+            "sig": "581a860fbdce5af82df6d681dccbe6afa965d1c0a120387682f79ebd288a66d1f49627c98155eafb6048b8aa40ab3f79016d1fe0a1c778112aa583753456d504"
+          },
+          {
+            "pubkey": "8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394",
+            "sig": "7b714342b35af495d9e26b9dd1dc218edade082bd5725a17f49f640ebd3d803281c80a6513127d8a257878536fff458abb1364287e4c7d8ed39747e812ce6706"
+          }
+        ]
+      },
+      "canonical": "{\"bonbagi\":1,\"members\":[{\"address\":\"utest138l662rss60ru6vz3mj3999pvxvseu3l4y6hmp2mevkvx7gly74l5tlpugtv6tqy9yrmgd4kakfptd8jlsr7vn67r03ls3wv67nu\",\"bps\":6000,\"label\":\"Dex\",\"pubkey\":\"8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c\"},{\"address\":\"utest18lm2cahwylrnks0s39n7ah60jpd0x7qmkllyh0kz68rcqsutraqzpyla8qf4pghcrdmqk4gcrmpwprrhl7j93zyfmxsf7p5qyqgc\",\"bps\":4000,\"label\":\"Hans\",\"pubkey\":\"8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394\"}],\"minShareZat\":\"10000\",\"network\":\"test\",\"title\":\"Kopi Kita demo\"}",
+      "hash": "a18c7faf6f5594120c859a1c8468b40a5f28cfcc24977db010ed4b38b0560925",
+      "unsigned": []
+    },
+    {
+      "name": "unicode3",
+      "file": {
+        "charter": {
+          "bonbagi": 1,
+          "network": "test",
+          "title": "Café Bersama",
+          "minShareZat": "10000",
+          "members": [
+            {
+              "label": "Ayu ☕",
+              "address": "utest1lu8epgr8xadtrfkeqhkyhysvjg22ppfa77wnp3jhzjrujjudcx9jvssz4vwtrq4rdpnvgy0fttyrxvueupwvyjcxrzmw8mcvy6wu",
+              "bps": 4000,
+              "pubkey": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c"
+            },
+            {
+              "label": "Bima",
+              "address": "utest1jnjkeehx2ek834dqv7zxf7l9afdsyz3favf0phx28x8ccze4npsvp5yp4nv6tfms7la682s5e5r3at09dth3ntpwl2jctetl0xx0",
+              "bps": 3000,
+              "pubkey": "8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394"
+            },
+            {
+              "label": "Citra",
+              "address": "ztestsapling1tftj3m7acad44mfv0p2krdn5h4277cnj3x3lg0asmvze607rwtccwrpdz5djcz068r4txwg9tpzn95dnepqy7sc5h9c8jfp89c0w",
+              "bps": 3000,
+              "pubkey": "ed4928c628d1c2c6eae90338905995612959273a5c63f93636c14614ac8737d1"
+            }
+          ]
+        },
+        "signatures": [
+          {
+            "pubkey": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c",
+            "sig": "73c67726867b07951a5de99a4e1d2d9fc2c097221a03f6a5cf2958758dc1177a2de28f22c2a58fd4aa62f397b229b0e9efa9a939c4401b9e2c1572eebede1d0c"
+          },
+          {
+            "pubkey": "8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394",
+            "sig": "5cf6124c56a3f087b497c41cdcf14e8fb83e6cf2af6f364422221a031c8c3e832727e1624aa53a4a06331f66267f9afd17906d365ad4d85d55ed31a1157d040a"
+          },
+          {
+            "pubkey": "ed4928c628d1c2c6eae90338905995612959273a5c63f93636c14614ac8737d1",
+            "sig": "8530271166428ee1e92b93b2fcecff99aa58716ed05b43538a04c25e0fd9a462ea629c77446f58834e88b6e79f9ee238c1aa51b02f940ce76519e90aeb3ccf0e"
+          }
+        ]
+      },
+      "canonical": "{\"bonbagi\":1,\"members\":[{\"address\":\"utest1lu8epgr8xadtrfkeqhkyhysvjg22ppfa77wnp3jhzjrujjudcx9jvssz4vwtrq4rdpnvgy0fttyrxvueupwvyjcxrzmw8mcvy6wu\",\"bps\":4000,\"label\":\"Ayu ☕\",\"pubkey\":\"8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c\"},{\"address\":\"utest1jnjkeehx2ek834dqv7zxf7l9afdsyz3favf0phx28x8ccze4npsvp5yp4nv6tfms7la682s5e5r3at09dth3ntpwl2jctetl0xx0\",\"bps\":3000,\"label\":\"Bima\",\"pubkey\":\"8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394\"},{\"address\":\"ztestsapling1tftj3m7acad44mfv0p2krdn5h4277cnj3x3lg0asmvze607rwtccwrpdz5djcz068r4txwg9tpzn95dnepqy7sc5h9c8jfp89c0w\",\"bps\":3000,\"label\":\"Citra\",\"pubkey\":\"ed4928c628d1c2c6eae90338905995612959273a5c63f93636c14614ac8737d1\"}],\"minShareZat\":\"10000\",\"network\":\"test\",\"title\":\"Café Bersama\"}",
+      "hash": "7b780a587c78856b0881cc6652c27559c2dc9d47069b096b4605fce4d325d477",
+      "unsigned": []
+    },
+    {
+      "name": "main3",
+      "file": {
+        "charter": {
+          "bonbagi": 1,
+          "network": "main",
+          "title": "Thirds",
+          "minShareZat": "10000",
+          "members": [
+            {
+              "label": "A",
+              "address": "u1udauar4p3xn4gk9ma6chsfhqpmp23jtsegmy8hqhutj8xgdt76dlpqgs0cw89fpkmn5yah9c2xmxw27uqhcv600cucqlq76fm8qn",
+              "bps": 3333,
+              "pubkey": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c"
+            },
+            {
+              "label": "B",
+              "address": "u1zsmr7l2ltztff480wqackudcgyyk8a97axm98appqhwy0apus83ty638hp934v8kvtcglfg6sfratppanevmdpsfwk989nmqghfr",
+              "bps": 3333,
+              "pubkey": "8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394"
+            },
+            {
+              "label": "C",
+              "address": "zs1gjeflmla9lrufnfyq8zcuwy3wwxzu87vpyu88rzt9r2pcjkvr54hxn67qfum9wwharudz62uhtv4gh9lx6p2q536q5fs2gmh4xjn",
+              "bps": 3334,
+              "pubkey": "ed4928c628d1c2c6eae90338905995612959273a5c63f93636c14614ac8737d1"
+            }
+          ]
+        },
+        "signatures": [
+          {
+            "pubkey": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c",
+            "sig": "1c829aae1824a772c37d02bd9cdd6a15a169189ea2a7a671aa4a55c1c80c99e73bab7d75bd05dfce1ea9a53aa7eade9e917a88e04fbe2bd2f66974644c957b0c"
+          },
+          {
+            "pubkey": "8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394",
+            "sig": "8e4a4e7ea35e6a7430ac383d669d4bd337a148795c133cb9096b210a354507d70a8603529560a2ed0685f49eb313250b8288e89f25000bc2bc26ba852a1fc00e"
+          },
+          {
+            "pubkey": "ed4928c628d1c2c6eae90338905995612959273a5c63f93636c14614ac8737d1",
+            "sig": "465cd5469e724a159d203e7336283501247bbec103b236ac21a802d24eec2b5d8789ba99ce017e1034b013969f2bb38fa3cc345b25d3a08edd1639a36ae80401"
+          }
+        ]
+      },
+      "canonical": "{\"bonbagi\":1,\"members\":[{\"address\":\"u1udauar4p3xn4gk9ma6chsfhqpmp23jtsegmy8hqhutj8xgdt76dlpqgs0cw89fpkmn5yah9c2xmxw27uqhcv600cucqlq76fm8qn\",\"bps\":3333,\"label\":\"A\",\"pubkey\":\"8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c\"},{\"address\":\"u1zsmr7l2ltztff480wqackudcgyyk8a97axm98appqhwy0apus83ty638hp934v8kvtcglfg6sfratppanevmdpsfwk989nmqghfr\",\"bps\":3333,\"label\":\"B\",\"pubkey\":\"8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394\"},{\"address\":\"zs1gjeflmla9lrufnfyq8zcuwy3wwxzu87vpyu88rzt9r2pcjkvr54hxn67qfum9wwharudz62uhtv4gh9lx6p2q536q5fs2gmh4xjn\",\"bps\":3334,\"label\":\"C\",\"pubkey\":\"ed4928c628d1c2c6eae90338905995612959273a5c63f93636c14614ac8737d1\"}],\"minShareZat\":\"10000\",\"network\":\"main\",\"title\":\"Thirds\"}",
+      "hash": "d1b916092be78b1e1970e9bd610c634b999b0c348f1926a60377b473851a8be0",
+      "unsigned": []
+    },
+    {
+      "name": "demo2-tampered",
+      "file": {
+        "charter": {
+          "bonbagi": 1,
+          "network": "test",
+          "title": "Kopi Kita demo",
+          "minShareZat": "10000",
+          "members": [
+            {
+              "label": "Dex",
+              "address": "utest138l662rss60ru6vz3mj3999pvxvseu3l4y6hmp2mevkvx7gly74l5tlpugtv6tqy9yrmgd4kakfptd8jlsr7vn67r03ls3wv67nu",
+              "bps": 5999,
+              "pubkey": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c"
+            },
+            {
+              "label": "Hans",
+              "address": "utest18lm2cahwylrnks0s39n7ah60jpd0x7qmkllyh0kz68rcqsutraqzpyla8qf4pghcrdmqk4gcrmpwprrhl7j93zyfmxsf7p5qyqgc",
+              "bps": 4001,
+              "pubkey": "8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394"
+            }
+          ]
+        },
+        "signatures": [
+          {
+            "pubkey": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c",
+            "sig": "581a860fbdce5af82df6d681dccbe6afa965d1c0a120387682f79ebd288a66d1f49627c98155eafb6048b8aa40ab3f79016d1fe0a1c778112aa583753456d504"
+          },
+          {
+            "pubkey": "8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394",
+            "sig": "7b714342b35af495d9e26b9dd1dc218edade082bd5725a17f49f640ebd3d803281c80a6513127d8a257878536fff458abb1364287e4c7d8ed39747e812ce6706"
+          }
+        ]
+      },
+      "canonical": "{\"bonbagi\":1,\"members\":[{\"address\":\"utest138l662rss60ru6vz3mj3999pvxvseu3l4y6hmp2mevkvx7gly74l5tlpugtv6tqy9yrmgd4kakfptd8jlsr7vn67r03ls3wv67nu\",\"bps\":5999,\"label\":\"Dex\",\"pubkey\":\"8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c\"},{\"address\":\"utest18lm2cahwylrnks0s39n7ah60jpd0x7qmkllyh0kz68rcqsutraqzpyla8qf4pghcrdmqk4gcrmpwprrhl7j93zyfmxsf7p5qyqgc\",\"bps\":4001,\"label\":\"Hans\",\"pubkey\":\"8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394\"}],\"minShareZat\":\"10000\",\"network\":\"test\",\"title\":\"Kopi Kita demo\"}",
+      "hash": "272932bcb8090f87c930cd2e8ab5548870e9dd26e7b8e7430c13a7089f616ab4",
+      "unsigned": [
+        0,
+        1
+      ]
+    },
+    {
+      "name": "demo2-partial",
+      "file": {
+        "charter": {
+          "bonbagi": 1,
+          "network": "test",
+          "title": "Kopi Kita demo",
+          "minShareZat": "10000",
+          "members": [
+            {
+              "label": "Dex",
+              "address": "utest138l662rss60ru6vz3mj3999pvxvseu3l4y6hmp2mevkvx7gly74l5tlpugtv6tqy9yrmgd4kakfptd8jlsr7vn67r03ls3wv67nu",
+              "bps": 6000,
+              "pubkey": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c"
+            },
+            {
+              "label": "Hans",
+              "address": "utest18lm2cahwylrnks0s39n7ah60jpd0x7qmkllyh0kz68rcqsutraqzpyla8qf4pghcrdmqk4gcrmpwprrhl7j93zyfmxsf7p5qyqgc",
+              "bps": 4000,
+              "pubkey": "8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394"
+            }
+          ]
+        },
+        "signatures": [
+          {
+            "pubkey": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c",
+            "sig": "581a860fbdce5af82df6d681dccbe6afa965d1c0a120387682f79ebd288a66d1f49627c98155eafb6048b8aa40ab3f79016d1fe0a1c778112aa583753456d504"
+          }
+        ]
+      },
+      "canonical": "{\"bonbagi\":1,\"members\":[{\"address\":\"utest138l662rss60ru6vz3mj3999pvxvseu3l4y6hmp2mevkvx7gly74l5tlpugtv6tqy9yrmgd4kakfptd8jlsr7vn67r03ls3wv67nu\",\"bps\":6000,\"label\":\"Dex\",\"pubkey\":\"8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c\"},{\"address\":\"utest18lm2cahwylrnks0s39n7ah60jpd0x7qmkllyh0kz68rcqsutraqzpyla8qf4pghcrdmqk4gcrmpwprrhl7j93zyfmxsf7p5qyqgc\",\"bps\":4000,\"label\":\"Hans\",\"pubkey\":\"8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394\"}],\"minShareZat\":\"10000\",\"network\":\"test\",\"title\":\"Kopi Kita demo\"}",
+      "hash": "a18c7faf6f5594120c859a1c8468b40a5f28cfcc24977db010ed4b38b0560925",
+      "unsigned": [
+        1
+      ]
+    }
+  ],
+  "splits": [
+    {
+      "total": "300000",
+      "bps": [
+        6000,
+        4000
+      ],
+      "min": "10000",
+      "out": [
+        "180000",
+        "120000"
+      ]
+    },
+    {
+      "total": "300001",
+      "bps": [
+        6000,
+        4000
+      ],
+      "min": "10000",
+      "out": [
+        "180001",
+        "120000"
+      ]
+    },
+    {
+      "total": "299999",
+      "bps": [
+        6000,
+        4000
+      ],
+      "min": "10000",
+      "out": [
+        "179999",
+        "120000"
+      ]
+    },
+    {
+      "total": "1000001",
+      "bps": [
+        4000,
+        3000,
+        3000
+      ],
+      "min": "10000",
+      "out": [
+        "400001",
+        "300000",
+        "300000"
+      ]
+    },
+    {
+      "total": "1000000",
+      "bps": [
+        3333,
+        3333,
+        3334
+      ],
+      "min": "10000",
+      "out": [
+        "333300",
+        "333300",
+        "333400"
+      ]
+    },
+    {
+      "total": "100",
+      "bps": [
+        3333,
+        3333,
+        3334
+      ],
+      "min": "1",
+      "out": [
+        "33",
+        "33",
+        "34"
+      ]
+    },
+    {
+      "total": "2100000000000000",
+      "bps": [
+        1,
+        9999
+      ],
+      "min": "10000",
+      "out": [
+        "210000000000",
+        "2099790000000000"
+      ]
+    },
+    {
+      "total": "15000",
+      "bps": [
+        6000,
+        4000
+      ],
+      "min": "10000",
+      "error": "member 1 would receive 9000 zat, below the minimum of 10000 zat — raise the price or merge small shares"
+    },
+    {
+      "total": "300000",
+      "bps": [
+        6000,
+        3000
+      ],
+      "min": "10000",
+      "error": "shares must add up to 100% (10000 bp), got 9000"
+    }
+  ],
+  "requests": [
+    {
+      "charter": "demo2",
+      "price_zat": "300000",
+      "order": "ord-k7m2qx9p",
+      "uri": "zcash:?address=utest138l662rss60ru6vz3mj3999pvxvseu3l4y6hmp2mevkvx7gly74l5tlpugtv6tqy9yrmgd4kakfptd8jlsr7vn67r03ls3wv67nu&amount=0.0018&memo=Ym9uYmFnaTp2MSBvPW9yZC1rN20ycXg5cCBjPWExOGM3ZmFmNmY1NTk0MTIgbT0xLzI&label=Dex&address.1=utest18lm2cahwylrnks0s39n7ah60jpd0x7qmkllyh0kz68rcqsutraqzpyla8qf4pghcrdmqk4gcrmpwprrhl7j93zyfmxsf7p5qyqgc&amount.1=0.0012&memo.1=Ym9uYmFnaTp2MSBvPW9yZC1rN20ycXg5cCBjPWExOGM3ZmFmNmY1NTk0MTIgbT0yLzI&label.1=Hans&message=Kopi%20Kita%20demo",
+      "lines": [
+        {
+          "label": "Dex",
+          "address": "utest138l662rss60ru6vz3mj3999pvxvseu3l4y6hmp2mevkvx7gly74l5tlpugtv6tqy9yrmgd4kakfptd8jlsr7vn67r03ls3wv67nu",
+          "amount_zat": "180000",
+          "memo": "bonbagi:v1 o=ord-k7m2qx9p c=a18c7faf6f559412 m=1/2"
+        },
+        {
+          "label": "Hans",
+          "address": "utest18lm2cahwylrnks0s39n7ah60jpd0x7qmkllyh0kz68rcqsutraqzpyla8qf4pghcrdmqk4gcrmpwprrhl7j93zyfmxsf7p5qyqgc",
+          "amount_zat": "120000",
+          "memo": "bonbagi:v1 o=ord-k7m2qx9p c=a18c7faf6f559412 m=2/2"
+        }
+      ]
+    },
+    {
+      "charter": "unicode3",
+      "price_zat": "1000001",
+      "order": "ord-t3stq4rm",
+      "uri": "zcash:?address=utest1lu8epgr8xadtrfkeqhkyhysvjg22ppfa77wnp3jhzjrujjudcx9jvssz4vwtrq4rdpnvgy0fttyrxvueupwvyjcxrzmw8mcvy6wu&amount=0.00400001&memo=Ym9uYmFnaTp2MSBvPW9yZC10M3N0cTRybSBjPTdiNzgwYTU4N2M3ODg1NmIgbT0xLzM&label=Ayu%20%E2%98%95&address.1=utest1jnjkeehx2ek834dqv7zxf7l9afdsyz3favf0phx28x8ccze4npsvp5yp4nv6tfms7la682s5e5r3at09dth3ntpwl2jctetl0xx0&amount.1=0.003&memo.1=Ym9uYmFnaTp2MSBvPW9yZC10M3N0cTRybSBjPTdiNzgwYTU4N2M3ODg1NmIgbT0yLzM&label.1=Bima&address.2=ztestsapling1tftj3m7acad44mfv0p2krdn5h4277cnj3x3lg0asmvze607rwtccwrpdz5djcz068r4txwg9tpzn95dnepqy7sc5h9c8jfp89c0w&amount.2=0.003&memo.2=Ym9uYmFnaTp2MSBvPW9yZC10M3N0cTRybSBjPTdiNzgwYTU4N2M3ODg1NmIgbT0zLzM&label.2=Citra&message=Cafe%CC%81%20Bersama",
+      "lines": [
+        {
+          "label": "Ayu ☕",
+          "address": "utest1lu8epgr8xadtrfkeqhkyhysvjg22ppfa77wnp3jhzjrujjudcx9jvssz4vwtrq4rdpnvgy0fttyrxvueupwvyjcxrzmw8mcvy6wu",
+          "amount_zat": "400001",
+          "memo": "bonbagi:v1 o=ord-t3stq4rm c=7b780a587c78856b m=1/3"
+        },
+        {
+          "label": "Bima",
+          "address": "utest1jnjkeehx2ek834dqv7zxf7l9afdsyz3favf0phx28x8ccze4npsvp5yp4nv6tfms7la682s5e5r3at09dth3ntpwl2jctetl0xx0",
+          "amount_zat": "300000",
+          "memo": "bonbagi:v1 o=ord-t3stq4rm c=7b780a587c78856b m=2/3"
+        },
+        {
+          "label": "Citra",
+          "address": "ztestsapling1tftj3m7acad44mfv0p2krdn5h4277cnj3x3lg0asmvze607rwtccwrpdz5djcz068r4txwg9tpzn95dnepqy7sc5h9c8jfp89c0w",
+          "amount_zat": "300000",
+          "memo": "bonbagi:v1 o=ord-t3stq4rm c=7b780a587c78856b m=3/3"
+        }
+      ]
+    },
+    {
+      "charter": "main3",
+      "price_zat": "1000000",
+      "order": "ord-mzn8w2ra",
+      "uri": "zcash:?address=u1udauar4p3xn4gk9ma6chsfhqpmp23jtsegmy8hqhutj8xgdt76dlpqgs0cw89fpkmn5yah9c2xmxw27uqhcv600cucqlq76fm8qn&amount=0.003333&memo=Ym9uYmFnaTp2MSBvPW9yZC1tem44dzJyYSBjPWQxYjkxNjA5MmJlNzhiMWUgbT0xLzM&label=A&address.1=u1zsmr7l2ltztff480wqackudcgyyk8a97axm98appqhwy0apus83ty638hp934v8kvtcglfg6sfratppanevmdpsfwk989nmqghfr&amount.1=0.003333&memo.1=Ym9uYmFnaTp2MSBvPW9yZC1tem44dzJyYSBjPWQxYjkxNjA5MmJlNzhiMWUgbT0yLzM&label.1=B&address.2=zs1gjeflmla9lrufnfyq8zcuwy3wwxzu87vpyu88rzt9r2pcjkvr54hxn67qfum9wwharudz62uhtv4gh9lx6p2q536q5fs2gmh4xjn&amount.2=0.003334&memo.2=Ym9uYmFnaTp2MSBvPW9yZC1tem44dzJyYSBjPWQxYjkxNjA5MmJlNzhiMWUgbT0zLzM&label.2=C&message=Thirds",
+      "lines": [
+        {
+          "label": "A",
+          "address": "u1udauar4p3xn4gk9ma6chsfhqpmp23jtsegmy8hqhutj8xgdt76dlpqgs0cw89fpkmn5yah9c2xmxw27uqhcv600cucqlq76fm8qn",
+          "amount_zat": "333300",
+          "memo": "bonbagi:v1 o=ord-mzn8w2ra c=d1b916092be78b1e m=1/3"
+        },
+        {
+          "label": "B",
+          "address": "u1zsmr7l2ltztff480wqackudcgyyk8a97axm98appqhwy0apus83ty638hp934v8kvtcglfg6sfratppanevmdpsfwk989nmqghfr",
+          "amount_zat": "333300",
+          "memo": "bonbagi:v1 o=ord-mzn8w2ra c=d1b916092be78b1e m=2/3"
+        },
+        {
+          "label": "C",
+          "address": "zs1gjeflmla9lrufnfyq8zcuwy3wwxzu87vpyu88rzt9r2pcjkvr54hxn67qfum9wwharudz62uhtv4gh9lx6p2q536q5fs2gmh4xjn",
+          "amount_zat": "333400",
+          "memo": "bonbagi:v1 o=ord-mzn8w2ra c=d1b916092be78b1e m=3/3"
+        }
+      ]
+    }
+  ],
+  "paylinks": [
+    {
+      "charter": "demo2",
+      "price_zat": "300000",
+      "url": "https://bonbagi.vercel.app/pay.html#c=eyJjaGFydGVyIjp7ImJvbmJhZ2kiOjEsIm5ldHdvcmsiOiJ0ZXN0IiwidGl0bGUiOiJLb3BpIEtpdGEgZGVtbyIsIm1pblNoYXJlWmF0IjoiMTAwMDAiLCJtZW1iZXJzIjpbeyJsYWJlbCI6IkRleCIsImFkZHJlc3MiOiJ1dGVzdDEzOGw2NjJyc3M2MHJ1NnZ6M21qMzk5OXB2eHZzZXUzbDR5NmhtcDJtZXZrdng3Z2x5NzRsNXRscHVndHY2dHF5OXlybWdkNGtha2ZwdGQ4amxzcjd2bjY3cjAzbHMzd3Y2N251IiwiYnBzIjo2MDAwLCJwdWJrZXkiOiI4YTg4ZTNkZDc0MDlmMTk1ZmQ1MmRiMmQzY2JhNWQ3MmNhNjcwOWJmMWQ5NDEyMWJmMzc0ODgwMWI0MGY2ZjVjIn0seyJsYWJlbCI6IkhhbnMiLCJhZGRyZXNzIjoidXRlc3QxOGxtMmNhaHd5bHJua3MwczM5bjdhaDYwanBkMHg3cW1rbGx5aDBrejY4cmNxc3V0cmFxenB5bGE4cWY0cGdoY3JkbXFrNGdjcm1wd3BycmhsN2o5M3p5Zm14c2Y3cDVxeXFnYyIsImJwcyI6NDAwMCwicHVia2V5IjoiODEzOTc3MGVhODdkMTc1ZjU2YTM1NDY2YzM0YzdlY2NjYjhkOGE5MWI0ZWUzN2EyNWRmNjBmNWI4ZmM5YjM5NCJ9XX0sInNpZ25hdHVyZXMiOlt7InB1YmtleSI6IjhhODhlM2RkNzQwOWYxOTVmZDUyZGIyZDNjYmE1ZDcyY2E2NzA5YmYxZDk0MTIxYmYzNzQ4ODAxYjQwZjZmNWMiLCJzaWciOiI1ODFhODYwZmJkY2U1YWY4MmRmNmQ2ODFkY2NiZTZhZmE5NjVkMWMwYTEyMDM4NzY4MmY3OWViZDI4OGE2NmQxZjQ5NjI3Yzk4MTU1ZWFmYjYwNDhiOGFhNDBhYjNmNzkwMTZkMWZlMGExYzc3ODExMmFhNTgzNzUzNDU2ZDUwNCJ9LHsicHVia2V5IjoiODEzOTc3MGVhODdkMTc1ZjU2YTM1NDY2YzM0YzdlY2NjYjhkOGE5MWI0ZWUzN2EyNWRmNjBmNWI4ZmM5YjM5NCIsInNpZyI6IjdiNzE0MzQyYjM1YWY0OTVkOWUyNmI5ZGQxZGMyMThlZGFkZTA4MmJkNTcyNWExN2Y0OWY2NDBlYmQzZDgwMzI4MWM4MGE2NTEzMTI3ZDhhMjU3ODc4NTM2ZmZmNDU4YWJiMTM2NDI4N2U0YzdkOGVkMzk3NDdlODEyY2U2NzA2In1dfQ&p=0.003"
+    },
+    {
+      "charter": "unicode3",
+      "price_zat": null,
+      "url": "https://bonbagi.vercel.app/pay.html#c=eyJjaGFydGVyIjp7ImJvbmJhZ2kiOjEsIm5ldHdvcmsiOiJ0ZXN0IiwidGl0bGUiOiJDYWZlzIEgQmVyc2FtYSIsIm1pblNoYXJlWmF0IjoiMTAwMDAiLCJtZW1iZXJzIjpbeyJsYWJlbCI6IkF5dSDimJUiLCJhZGRyZXNzIjoidXRlc3QxbHU4ZXBncjh4YWR0cmZrZXFoa3loeXN2amcyMnBwZmE3N3ducDNqaHpqcnVqanVkY3g5anZzc3o0dnd0cnE0cmRwbnZneTBmdHR5cnh2dWV1cHd2eWpjeHJ6bXc4bWN2eTZ3dSIsImJwcyI6NDAwMCwicHVia2V5IjoiOGE4OGUzZGQ3NDA5ZjE5NWZkNTJkYjJkM2NiYTVkNzJjYTY3MDliZjFkOTQxMjFiZjM3NDg4MDFiNDBmNmY1YyJ9LHsibGFiZWwiOiJCaW1hIiwiYWRkcmVzcyI6InV0ZXN0MWpuamtlZWh4MmVrODM0ZHF2N3p4ZjdsOWFmZHN5ejNmYXZmMHBoeDI4eDhjY3plNG5wc3ZwNXlwNG52NnRmbXM3bGE2ODJzNWU1cjNhdDA5ZHRoM250cHdsMmpjdGV0bDB4eDAiLCJicHMiOjMwMDAsInB1YmtleSI6IjgxMzk3NzBlYTg3ZDE3NWY1NmEzNTQ2NmMzNGM3ZWNjY2I4ZDhhOTFiNGVlMzdhMjVkZjYwZjViOGZjOWIzOTQifSx7ImxhYmVsIjoiQ2l0cmEiLCJhZGRyZXNzIjoienRlc3RzYXBsaW5nMXRmdGozbTdhY2FkNDRtZnYwcDJrcmRuNWg0Mjc3Y25qM3gzbGcwYXNtdnplNjA3cnd0Y2N3cnBkejVkamN6MDY4cjR0eHdnOXRwem45NWRuZXBxeTdzYzVoOWM4amZwODljMHciLCJicHMiOjMwMDAsInB1YmtleSI6ImVkNDkyOGM2MjhkMWMyYzZlYWU5MDMzODkwNTk5NTYxMjk1OTI3M2E1YzYzZjkzNjM2YzE0NjE0YWM4NzM3ZDEifV19LCJzaWduYXR1cmVzIjpbeyJwdWJrZXkiOiI4YTg4ZTNkZDc0MDlmMTk1ZmQ1MmRiMmQzY2JhNWQ3MmNhNjcwOWJmMWQ5NDEyMWJmMzc0ODgwMWI0MGY2ZjVjIiwic2lnIjoiNzNjNjc3MjY4NjdiMDc5NTFhNWRlOTlhNGUxZDJkOWZjMmMwOTcyMjFhMDNmNmE1Y2YyOTU4NzU4ZGMxMTc3YTJkZTI4ZjIyYzJhNThmZDRhYTYyZjM5N2IyMjliMGU5ZWZhOWE5MzljNDQwMWI5ZTJjMTU3MmVlYmVkZTFkMGMifSx7InB1YmtleSI6IjgxMzk3NzBlYTg3ZDE3NWY1NmEzNTQ2NmMzNGM3ZWNjY2I4ZDhhOTFiNGVlMzdhMjVkZjYwZjViOGZjOWIzOTQiLCJzaWciOiI1Y2Y2MTI0YzU2YTNmMDg3YjQ5N2M0MWNkY2YxNGU4ZmI4M2U2Y2YyYWY2ZjM2NDQyMjIyMWEwMzFjOGMzZTgzMjcyN2UxNjI0YWE1M2E0YTA2MzMxZjY2MjY3ZjlhZmQxNzkwNmQzNjVhZDRkODVkNTVlZDMxYTExNTdkMDQwYSJ9LHsicHVia2V5IjoiZWQ0OTI4YzYyOGQxYzJjNmVhZTkwMzM4OTA1OTk1NjEyOTU5MjczYTVjNjNmOTM2MzZjMTQ2MTRhYzg3MzdkMSIsInNpZyI6Ijg1MzAyNzExNjY0MjhlZTFlOTJiOTNiMmZjZWNmZjk5YWE1ODcxNmVkMDViNDM1MzhhMDRjMjVlMGZkOWE0NjJlYTYyOWM3NzQ0NmY1ODgzNGU4OGI2ZTc5ZjllZTIzOGMxYWE1MWIwMmY5NDBjZTc2NTE5ZTkwYWViM2NjZjBlIn1dfQ"
+    }
+  ],
+  "memos": [
+    {
+      "order": "ord-k7m2qx9p",
+      "hash": "3b25c168a1f0e2d4c5b6a7980112233445566778899aabbccddeeff001122334",
+      "member": 1,
+      "of": 2,
+      "memo": "bonbagi:v1 o=ord-k7m2qx9p c=3b25c168a1f0e2d4 m=1/2"
+    },
+    {
+      "order": "A-1",
+      "hash": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "member": 50,
+      "of": 50,
+      "memo": "bonbagi:v1 o=A-1 c=ffffffffffffffff m=50/50"
+    }
+  ]
+}

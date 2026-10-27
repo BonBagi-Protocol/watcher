@@ -1,0 +1,16 @@
+# Build context: sources and examples only, never wallets, viewing keys, private keys or receipts.
+target
+.git
+.github
+**/bonbagi-watch-*
+**/*.sqlite
+**/*.sqlite3
+**/*.db
+**/*.age
+**/*.seed
+**/*.mnemonic
+**/*.pem
+**/ufvk*.txt
+**/*-private-key.txt
+.env
+.env.*

@@ -1,0 +1,50 @@
+{
+  "charter": {
+    "fingerprint": "a18c7faf6f559412",
+    "fully_signed": true,
+    "hash": "a18c7faf6f5594120c859a1c8468b40a5f28cfcc24977db010ed4b38b0560925",
+    "members": 2,
+    "network": "test",
+    "title": "Kopi Kita demo"
+  },
+  "member": {
+    "bps": 6000,
+    "index": 1,
+    "label": "Dex",
+    "of": 2,
+    "pubkey": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c"
+  },
+  "min_conf": 1,
+  "order": "ord-k7m2qx9p",
+  "other_charters": 1,
+  "other_orders": 3,
+  "payments": [
+    {
+      "amount": "0.0018",
+      "amount_zat": "180000",
+      "confirmations": 211,
+      "expected_zat": "180000",
+      "height": 4540210,
+      "implied_total_zat": null,
+      "notes": [],
+      "order": "ord-k7m2qx9p",
+      "output_index": 0,
+      "pool": "Ironwood",
+      "problems": [],
+      "status": "paid",
+      "txid": "95ad566a4093ec8b90bdb835edc903fd70b405d82c9a54c8103e875b87a3d6de"
+    }
+  ],
+  "price_from": "flag",
+  "price_zat": "300000",
+  "receipt": null,
+  "source": {
+    "kind": "snapshot",
+    "note": "Constructed example, not a real wallet: what member 1 (Dex) of charter.json would see. Charter, amounts and memos come from @bonbagi/core (conformance/vectors.json); txids are placeholders.",
+    "path": "examples/testnet/snapshot.json",
+    "tip_height": 4540420
+  },
+  "summary": "Your share of order ord-k7m2qx9p arrived: 0.0018 TAZ in block 4540210 (211 confirmations).",
+  "verdict": "paid",
+  "watcher": "0.1.0"
+}

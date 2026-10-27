@@ -1,0 +1,23 @@
+{
+  "receipt": {
+    "amount_zat": "180000",
+    "bonbagi_receipt": 1,
+    "charter": "a18c7faf6f5594120c859a1c8468b40a5f28cfcc24977db010ed4b38b0560925",
+    "checked_at": "2026-10-27T05:40:00Z",
+    "confirmations": 211,
+    "expected_zat": "180000",
+    "height": 4540210,
+    "label": "Dex",
+    "member": 1,
+    "network": "test",
+    "of": 2,
+    "order": "ord-k7m2qx9p",
+    "output_index": 0,
+    "pool": "Ironwood",
+    "pubkey": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c",
+    "source": "snapshot",
+    "title": "Kopi Kita demo",
+    "txid": "95ad566a4093ec8b90bdb835edc903fd70b405d82c9a54c8103e875b87a3d6de"
+  },
+  "sig": "898c36a27bffff1617680f8a8a0db3a6704e8163f00f11be562a66fa1e07ba42992d2ac18ac756664e4502fc75aa664178bbfa907651fe2654906658224caa09"
+}

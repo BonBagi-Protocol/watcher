@@ -1,0 +1,32 @@
+{
+  "charter": {
+    "bonbagi": 1,
+    "network": "test",
+    "title": "Kopi Kita demo",
+    "minShareZat": "10000",
+    "members": [
+      {
+        "label": "Dex",
+        "address": "utest138l662rss60ru6vz3mj3999pvxvseu3l4y6hmp2mevkvx7gly74l5tlpugtv6tqy9yrmgd4kakfptd8jlsr7vn67r03ls3wv67nu",
+        "bps": 6000,
+        "pubkey": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c"
+      },
+      {
+        "label": "Hans",
+        "address": "utest18lm2cahwylrnks0s39n7ah60jpd0x7qmkllyh0kz68rcqsutraqzpyla8qf4pghcrdmqk4gcrmpwprrhl7j93zyfmxsf7p5qyqgc",
+        "bps": 4000,
+        "pubkey": "8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394"
+      }
+    ]
+  },
+  "signatures": [
+    {
+      "pubkey": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c",
+      "sig": "581a860fbdce5af82df6d681dccbe6afa965d1c0a120387682f79ebd288a66d1f49627c98155eafb6048b8aa40ab3f79016d1fe0a1c778112aa583753456d504"
+    },
+    {
+      "pubkey": "8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394",
+      "sig": "7b714342b35af495d9e26b9dd1dc218edade082bd5725a17f49f640ebd3d803281c80a6513127d8a257878536fff458abb1364287e4c7d8ed39747e812ce6706"
+    }
+  ]
+}

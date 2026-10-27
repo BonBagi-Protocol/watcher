@@ -1,0 +1,26 @@
+[package]
+name = "bonbagi-watcher"
+version = "0.1.0"
+description = "Self-hosted verifier for BonBagi members: confirms your share of a split Zcash payment arrived, with your own viewing key, on your own machine"
+edition = "2021"
+rust-version = "1.99"
+license = "MIT"
+repository = "https://github.com/BonBagi/watcher"
+publish = false
+
+[[bin]]
+name = "bonbagi-watcher"
+path = "src/main.rs"
+
+[dependencies]
+base64 = "0.22"
+# ZIP 215 signature validation: the same rules @noble/ed25519 applies by default in the web app.
+ed25519-zebra = "4"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+# Charter strings are NFC-normalised before signing, as in @bonbagi/core.
+unicode-normalization = "0.1"
+
+[profile.release]
+strip = true

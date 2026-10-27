@@ -1,0 +1,19 @@
+BonBagi watcher 0.1.0 · local check: your viewing key and amounts stay on this machine
+Charter  "Kopi Kita demo" · testnet · a18c7faf6f559412 · signed by 2/2 members
+You      member 1/2 "Dex" · 60% share · key 8a88e3dd…6f5c
+Source   snapshot examples/testnet/snapshot.json · chain tip 4540420
+         Constructed example, not a real wallet: what member 1 (Dex) of charter.json would see. Charter, amounts and memos come from @bonbagi/core (conformance/vectors.json); txids are placeholders.
+
+  order          status            amount     height  conf  txid
+  ord-k7m2qx9p   PAID          0.0018 TAZ    4540210   211  95ad566a4093ec8b…
+                 · fits your 60% share of a 0.003 TAZ total
+  ord-9xq2ttmh   PAID          0.0006 TAZ    4540388    33  a14b08c08861482e…
+                 · fits your 60% share of a 0.001 TAZ total
+  ord-swapped1   MISMATCH      0.0012 TAZ    4540401    20  99616b621304703d…
+                 ! the memo is for member 2/2, you are member 1/2
+  ord-pnd3w8kq   PENDING       0.0009 TAZ          -     0  6859214801541331…
+                 · fits your 60% share of a 0.0015 TAZ total
+
+  1 BonBagi output(s) for a different charter were left out.
+
+=> MISMATCH  4 payment(s) to you under this charter: 2 paid (0.0024 TAZ), 1 pending, 1 mismatched. Look at the MISMATCH rows before you trust them.

@@ -1,0 +1,82 @@
+# Builds the Docker image (watcher + zcash-devtool), checks the golden examples inside it, runs a
+# live testnet scan with a fresh empty viewing key, and publishes the image to GHCR from main and
+# from version tags. zcash-devtool takes minutes to compile, so its layer is cached between runs.
+name: image
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: image-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  IMAGE: ghcr.io/bonbagi/watcher
+
+jobs:
+  image:
+    name: docker build, golden examples, live testnet scan, publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - name: docker build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          load: true
+          tags: watcher:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: golden examples inside the image
+        env:
+          SOURCE_DATE_EPOCH: "1793079600"
+        run: |
+          E=examples/testnet
+          set +e
+          docker run --rm watcher:ci check --charter $E/charter.json --snapshot $E/snapshot.json --member 1 > all.txt
+          test $? = 1 || exit 1
+          set -e
+          diff -u $E/expected/all.txt all.txt
+          docker run --rm watcher:ci check --charter $E/charter.json --snapshot $E/snapshot.json \
+            --key-file $E/dex-key.TEST-ONLY.txt --order ord-k7m2qx9p --price 0.003 > paid.txt
+          diff -u $E/expected/order-paid.txt paid.txt
+          docker run --rm watcher:ci verify-receipt $E/expected/receipt.json --charter $E/charter.json > receipt.txt
+          diff -u $E/expected/verify-receipt.txt receipt.txt
+          docker run --rm --entrypoint zcash-devtool watcher:ci --help | head -n 3
+
+      - name: live scan on testnet (fresh empty viewing key, expects NOT FOUND)
+        run: |
+          start=$(date +%s)
+          docker run --rm --entrypoint live-smoke watcher:ci
+          echo "live smoke: $(( $(date +%s) - start )) s" | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: recorded live check (runs when the repository variables are set)
+        if: vars.WATCH_UFVK != ''
+        env:
+          BONBAGI_UFVK: ${{ vars.WATCH_UFVK }}
+        run: |
+          docker run --rm -e BONBAGI_UFVK -v "$PWD/examples:/data:ro" -w /tmp watcher:ci check \
+            --charter "/data/${{ vars.WATCH_CHARTER }}" --member "${{ vars.WATCH_MEMBER }}" \
+            --order "${{ vars.WATCH_ORDER }}" --birthday "${{ vars.WATCH_BIRTHDAY }}"
+
+      - name: image size
+        run: docker image ls watcher:ci --format 'image size: {{.Size}}' | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: publish to GHCR
+        if: github.event_name != 'pull_request'
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          tags="$IMAGE:sha-${GITHUB_SHA::7}"
+          if [ "$GITHUB_REF_TYPE" = tag ]; then tags="$tags $IMAGE:${GITHUB_REF_NAME#v} $IMAGE:latest"; else tags="$tags $IMAGE:main"; fi
+          for t in $tags; do docker tag watcher:ci "$t"; docker push "$t"; echo "pushed $t" | tee -a "$GITHUB_STEP_SUMMARY"; done
