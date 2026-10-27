@@ -71,7 +71,8 @@ jobs:
             --order "${{ vars.WATCH_ORDER }}" --birthday "${{ vars.WATCH_BIRTHDAY }}"
 
       - name: image size
-        run: docker image ls watcher:ci --format 'image size: {{.Size}}' | tee -a "$GITHUB_STEP_SUMMARY"
+        run: |
+          docker image ls watcher:ci --format 'image size: {{.Size}}' | tee -a "$GITHUB_STEP_SUMMARY"
 
       - name: publish to GHCR
         if: github.event_name != 'pull_request'

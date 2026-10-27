@@ -1,0 +1,13 @@
+# Default gitleaks rules, minus the test data. Those files are full of Ed25519 public keys,
+# signatures and SHA-256 hashes ("pubkey": "<64 hex>" trips the generic API key rule). The only
+# private keys in them are the published test seeds 0x01…01, 0x02…02, 0x03…03 and the RFC 8032
+# test key; no real key belongs anywhere in this repository.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Public test vectors and the constructed example"
+paths = [
+  '''^conformance/vectors\.json$''',
+  '''^examples/testnet/''',
+]

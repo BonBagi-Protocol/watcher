@@ -12,7 +12,7 @@ step "cargo test";          cargo test --locked
 
 step "secret scan"
 if command -v gitleaks >/dev/null 2>&1; then
-  gitleaks git --redact --no-banner --exit-code 1 .
+  gitleaks git --config .gitleaks.toml --redact --no-banner --verbose --exit-code 1 .
 else
   echo "gitleaks not installed locally; CI runs it on every push (https://github.com/gitleaks/gitleaks/releases)."
 fi
