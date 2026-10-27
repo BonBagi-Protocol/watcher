@@ -3,10 +3,10 @@
 // charter hash, ZIP-215 signature checks, the zatoshi split, the memo and the pay link) and its
 // tests replay these vectors, so the two implementations cannot drift apart unnoticed.
 //
-//   node conformance/generate.ts <path to the core's src/ directory> > conformance/vectors.json
+//   node conformance/generate.ts ../core/src > conformance/vectors.json
 //
 // The core imports @noble/ed25519, so run it from a checkout where that package is installed
-// (for example the BonBagi app repository after `npm ci`). Everything here is deterministic:
+// (a BonBagi/core checkout after `npm ci`). Everything here is deterministic:
 // fixed private keys, fixed order IDs, fixed prices.
 
 import { join } from "node:path";
