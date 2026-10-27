@@ -230,8 +230,13 @@ fn check(a: &CheckArgs, env: &Env) -> Result<(i32, String), String> {
             std::time::Duration::from_secs(60 * f.max_wait_mins),
             |v, c| {
                 // Progress goes to stderr straight away; stdout keeps only the final report.
+                let detail = if c.verdict == Verdict::Mismatch {
+                    format!(" ({})", c.summary)
+                } else {
+                    String::new()
+                };
                 eprintln!(
-                    "{}  {} at block {}; scanning again in {} s (Ctrl+C to stop)",
+                    "{}  {} at block {}{detail}; scanning again in {} s (Ctrl+C to stop)",
                     time::rfc3339(time::now_secs(None)),
                     c.verdict.word(),
                     v.tip_height,

@@ -12,5 +12,9 @@ target
 **/*.pem
 **/ufvk*.txt
 **/*-private-key.txt
+**/receipt*.json
+!examples/testnet/expected/receipt.json
+**/snapshot*.json
+!examples/testnet/snapshot.json
 .env
 .env.*

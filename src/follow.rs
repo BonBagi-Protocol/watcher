@@ -1,5 +1,7 @@
-//! `--follow`: keep scanning until the order settles, so a member can leave the watcher running
-//! while the buyer pays. Settled means PAID or MISMATCH; PENDING and NOT FOUND are scanned again.
+//! `--follow`: keep scanning until the order is paid, so a member can leave the watcher running
+//! while the buyer pays. Only PAID ends it early: a MISMATCH may be followed by the right payment
+//! (and anyone who knows the order could send a stray output to stop the watch), so it is shown
+//! as progress and the scan goes on until `--max-wait`.
 
 use std::time::Duration;
 
@@ -7,7 +9,7 @@ use crate::check::{Check, Verdict};
 use crate::source::View;
 
 pub fn settled(v: Verdict) -> bool {
-    matches!(v, Verdict::Paid | Verdict::Mismatch)
+    v == Verdict::Paid
 }
 
 /// Runs `observe` until the verdict settles or `max_wait` of waiting between scans has passed,
@@ -101,12 +103,30 @@ mod tests {
     }
 
     #[test]
-    fn a_mismatch_stops_at_once() {
+    fn a_mismatch_is_reported_and_the_watch_goes_on() {
+        let mut script = vec![Verdict::Mismatch, Verdict::Paid].into_iter();
+        let mut reported = Vec::new();
+        let (_, check) = until_settled(
+            || Ok(obs(script.next().unwrap(), 1)),
+            Duration::from_secs(30),
+            Duration::from_secs(90),
+            |_, c| reported.push(c.verdict),
+            |_| {},
+        )
+        .unwrap();
+        assert_eq!(
+            (check.verdict, reported),
+            (Verdict::Paid, vec![Verdict::Mismatch])
+        );
+    }
+
+    #[test]
+    fn paid_stops_at_once() {
         let mut scans = 0;
         until_settled(
             || {
                 scans += 1;
-                Ok(obs(Verdict::Mismatch, 1))
+                Ok(obs(Verdict::Paid, 1))
             },
             Duration::from_secs(30),
             Duration::from_secs(90),

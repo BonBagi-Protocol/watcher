@@ -163,20 +163,21 @@ fn is_transient(message: &str) -> bool {
     m.contains("transport error") || m.contains("timed out") || m.contains("unavailable")
 }
 
-/// Error lines are shown to the user; never let a viewing key through.
+/// Error lines are shown to the user; never let a viewing key through, wherever it sits in the
+/// line (`fvk=uview1…`, quoted, in parentheses).
 fn redact(line: &str) -> String {
-    line.split(' ')
-        .map(|w| {
-            if w.trim_matches(|c: char| !c.is_ascii_alphanumeric())
-                .starts_with("uview")
-            {
-                "<viewing key>"
-            } else {
-                w
-            }
-        })
-        .collect::<Vec<_>>()
-        .join(" ")
+    let mut out = String::with_capacity(line.len());
+    let mut rest = line;
+    while let Some(i) = rest.find("uview") {
+        out.push_str(&rest[..i]);
+        let key_len = rest[i..]
+            .find(|c: char| !c.is_ascii_alphanumeric())
+            .unwrap_or(rest.len() - i);
+        out.push_str("<viewing key>");
+        rest = &rest[i + key_len..];
+    }
+    out.push_str(rest);
+    out
 }
 
 fn is_txid(s: &str) -> bool {
@@ -328,7 +329,11 @@ aa00000000000000000000000000000000000000000000000000000000000000
     fn viewing_keys_never_reach_error_messages() {
         assert_eq!(
             redact("Error: bad key 'uviewtest1abcdef' given"),
-            "Error: bad key <viewing key> given"
+            "Error: bad key '<viewing key>' given"
+        );
+        assert_eq!(
+            redact("fvk=uview1qqq,x(uviewtest1zz)"),
+            "fvk=<viewing key>,x(<viewing key>)"
         );
         assert!(is_transient("Error: transport error"));
         assert!(!is_transient("Error: insufficient balance"));

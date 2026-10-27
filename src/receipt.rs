@@ -157,11 +157,31 @@ pub fn verify(text: &str, charter: Option<&Verified>) -> Result<Checked, String>
         ),
         "signature: does not verify; the receipt was changed or signed with another key".into(),
     );
+    // A receipt states what it expected; a receipt for less than that is not a confirmation.
+    if let Some(expected) = body.get("expected_zat") {
+        let want = expected.as_str().and_then(|e| e.parse::<u64>().ok());
+        check(
+            want == Some(amount),
+            format!(
+                "expected: {} arrived, as the receipt states",
+                with_ticker(amount, network)
+            ),
+            format!(
+                "expected: {} arrived, but the receipt itself expected {}",
+                with_ticker(amount, network),
+                want.map_or("an unreadable amount".into(), |w| with_ticker(w, network))
+            ),
+        );
+    }
     match charter {
-        None => lines.push(
-            "INFO  charter: not given, so the key is not tied to a member (pass --charter or --link)"
-                .into(),
-        ),
+        None => {
+            // Anyone can sign anything with a fresh key; only the charter says whose key it is.
+            valid = false;
+            lines.push(
+                "FAIL  charter: not given, so nothing ties this key to a member (pass --charter or --link)"
+                    .into(),
+            );
+        }
         Some(v) => {
             let c = &v.charter;
             check(
@@ -178,14 +198,18 @@ pub fn verify(text: &str, charter: Option<&Verified>) -> Result<Checked, String>
                 of == c.members.len() && slot.is_some_and(|m| m.pubkey == pubkey),
                 format!(
                     "member: key is member {member}/{of} \"{}\" of the charter",
-                    slot.map(|m| m.label.as_str()).unwrap_or_default()
+                    crate::render::printable(slot.map(|m| m.label.as_str()).unwrap_or_default())
                 ),
                 format!("member: key is not member {member}/{of} of this charter"),
             );
             check(
                 network == c.network,
                 format!("network: {}", network.name()),
-                format!("network: receipt is {}, charter is {}", network.name(), c.network.name()),
+                format!(
+                    "network: receipt is {}, charter is {}",
+                    network.name(),
+                    c.network.name()
+                ),
             );
             if let Some(m) = slot {
                 let bps: Vec<u32> = c.members.iter().map(|m| m.bps).collect();
@@ -193,12 +217,12 @@ pub fn verify(text: &str, charter: Option<&Verified>) -> Result<Checked, String>
                 check(
                     fits.is_some(),
                     format!(
-                        "amount: {} fits a {}% share",
+                        "share: {} fits a {}% share",
                         with_ticker(amount, network),
                         crate::check::pct(m.bps)
                     ),
                     format!(
-                        "amount: {} is not a {}% share of any total",
+                        "share: {} is not a {}% share of any total",
                         with_ticker(amount, network),
                         crate::check::pct(m.bps)
                     ),
@@ -207,16 +231,18 @@ pub fn verify(text: &str, charter: Option<&Verified>) -> Result<Checked, String>
         }
     }
     let height = u("height").map_or("unmined".to_string(), |h| format!("block {h}"));
-    let summary = if valid {
-        format!(
+    let summary = match charter {
+        Some(v) if valid => format!(
             "VALID: member {member}/{of} \"{}\" confirms {} for order {order} (tx {}…, {height}, checked {}).",
-            s("label"),
+            crate::render::printable(&v.charter.members[member - 1].label),
             with_ticker(amount, network),
             &txid[..16],
-            s("checked_at")
-        )
-    } else {
-        "INVALID: do not rely on this receipt.".to_string()
+            crate::render::printable(&s("checked_at"))
+        ),
+        None if sig_ok => "NOT VERIFIED: the receipt is intact, but without the charter nobody \
+                           can tell whose key signed it. Check it with --charter or --link."
+            .to_string(),
+        _ => "INVALID: do not rely on this receipt.".to_string(),
     };
     Ok(Checked {
         valid,

@@ -2,12 +2,12 @@
   "receipt": {
     "amount_zat": "180000",
     "bonbagi_receipt": 1,
-    "charter": "a18c7faf6f5594120c859a1c8468b40a5f28cfcc24977db010ed4b38b0560925",
+    "charter": "4857f20a3cac5fe5ef24baef43630b9bda10c4cf3ce7ba199d612e5fc3b68d1b",
     "checked_at": "2026-10-27T05:40:00Z",
     "confirmations": 211,
     "expected_zat": "180000",
     "height": 4540210,
-    "label": "Dex",
+    "label": "Rani",
     "member": 1,
     "network": "test",
     "of": 2,
@@ -19,5 +19,5 @@
     "title": "Kopi Kita demo",
     "txid": "95ad566a4093ec8b90bdb835edc903fd70b405d82c9a54c8103e875b87a3d6de"
   },
-  "sig": "898c36a27bffff1617680f8a8a0db3a6704e8163f00f11be562a66fa1e07ba42992d2ac18ac756664e4502fc75aa664178bbfa907651fe2654906658224caa09"
+  "sig": "40a8663d847a8628f1587280bf432ad8947b1699965ff27493bb58af886bcbff5b5e050dee6aedcc303b8fcdad1b180ed7d75533b5e1f041f08c27b68e115a04"
 }

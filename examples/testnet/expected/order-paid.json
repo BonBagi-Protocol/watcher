@@ -1,8 +1,8 @@
 {
   "charter": {
-    "fingerprint": "a18c7faf6f559412",
+    "fingerprint": "4857f20a3cac5fe5",
     "fully_signed": true,
-    "hash": "a18c7faf6f5594120c859a1c8468b40a5f28cfcc24977db010ed4b38b0560925",
+    "hash": "4857f20a3cac5fe5ef24baef43630b9bda10c4cf3ce7ba199d612e5fc3b68d1b",
     "members": 2,
     "network": "test",
     "title": "Kopi Kita demo"
@@ -10,7 +10,7 @@
   "member": {
     "bps": 6000,
     "index": 1,
-    "label": "Dex",
+    "label": "Rani",
     "of": 2,
     "pubkey": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c"
   },
@@ -40,7 +40,7 @@
   "receipt": null,
   "source": {
     "kind": "snapshot",
-    "note": "Constructed example, not a real wallet: what member 1 (Dex) of charter.json would see. Charter, amounts and memos come from @bonbagi/core (conformance/vectors.json); txids are placeholders.",
+    "note": "Constructed example, not a real wallet: what member 1 (Rani) of charter.json would see. Charter, amounts and memos come from @bonbagi/core (conformance/vectors.json); txids are placeholders.",
     "path": "examples/testnet/snapshot.json",
     "tip_height": 4540420
   },

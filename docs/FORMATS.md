@@ -10,7 +10,7 @@ Each member's output in a BonBagi payment carries this UTF-8 text memo, built by
 
 ```text
 bonbagi:v1 o=<order ID> c=<charter fingerprint> m=<member>/<members>
-bonbagi:v1 o=ord-k7m2qx9p c=a18c7faf6f559412 m=1/2
+bonbagi:v1 o=ord-k7m2qx9p c=4857f20a3cac5fe5 m=1/2
 ```
 
 | Field | Rule |
@@ -52,7 +52,7 @@ memo starts with `bonbagi:`.
       "output_index": 0,
       "pool": "Ironwood",
       "value_zat": 180000,
-      "memo": "bonbagi:v1 o=ord-k7m2qx9p c=a18c7faf6f559412 m=1/2"
+      "memo": "bonbagi:v1 o=ord-k7m2qx9p c=4857f20a3cac5fe5 m=1/2"
     }
   ]
 }
@@ -76,12 +76,12 @@ Unknown fields are rejected, so a typo does not silently change the result.
   "receipt": {
     "amount_zat": "180000",
     "bonbagi_receipt": 1,
-    "charter": "a18c7faf6f5594120c859a1c8468b40a5f28cfcc24977db010ed4b38b0560925",
+    "charter": "4857f20a3cac5fe5ef24baef43630b9bda10c4cf3ce7ba199d612e5fc3b68d1b",
     "checked_at": "2026-10-27T05:40:00Z",
     "confirmations": 211,
     "expected_zat": "180000",
     "height": 4540210,
-    "label": "Dex",
+    "label": "Rani",
     "member": 1,
     "network": "test",
     "of": 2,
@@ -105,8 +105,11 @@ signed bytes = "bonbagi-receipt-v1\n" + canonicalJson(receipt)
 member the receipt is about. `expected_zat` is present when a price was known. `source` is
 `live` or `snapshot`. A receipt is issued only for a PAID result of one `--order`.
 
-`verify-receipt` checks the signature and, given the charter, that the charter hash matches,
-that `pubkey` is member `member` of `of`, the network, and that the amount is a possible share.
+`verify-receipt` checks the signature, that `amount_zat` equals `expected_zat` when the receipt
+states one, and, given the charter, that the charter hash matches, that `pubkey` is member
+`member` of `of`, the network, and that the amount is a possible share. Without the charter it
+answers NOT VERIFIED (exit 1): anyone can sign with a fresh key, only the charter says whose
+key is a member's.
 
 ### Checking a receipt in TypeScript
 

@@ -14,21 +14,21 @@ Receipt  receipt.json · signed with key 8a88e3dd…6f5c
 
 ## Run it in 60 seconds
 
-Offline, on the bundled testnet example (no wallet, no network, no keys of yours):
-
-```bash
-docker run --rm ghcr.io/bonbagi/watcher:0.1.0 check \
-  --charter examples/testnet/charter.json --snapshot examples/testnet/snapshot.json --member 1
-```
-
-Without Docker (Rust 1.99):
+Offline, on the bundled testnet example (no wallet, no network, no keys of yours). With Rust 1.99 (the first build takes about a minute):
 
 ```bash
 git clone https://github.com/BonBagi/watcher && cd watcher
 cargo run --release -- check --charter examples/testnet/charter.json --snapshot examples/testnet/snapshot.json --member 1
 ```
 
-You get one row per BonBagi payment to member 1 ("Dex", 60%) of the example charter. Each row is checked:
+With Docker instead. The image also contains `zcash-devtool` for live scans; building it compiles that from source, which takes about ten minutes the first time:
+
+```bash
+docker build -t bonbagi-watcher .
+docker run --rm bonbagi-watcher check --charter examples/testnet/charter.json --snapshot examples/testnet/snapshot.json --member 1
+```
+
+You get one row per BonBagi payment to member 1 ("Rani", 60%) of the example charter. Each row is checked:
 
 ```text
   order          status            amount     height  conf  txid
@@ -42,32 +42,30 @@ You get one row per BonBagi payment to member 1 ("Dex", 60%) of the example char
                  · fits your 60% share of a 0.0015 TAZ total
 ```
 
-The example is **constructed** (see [What is real](#what-is-real-and-what-is-not)): the charter, amounts and memos come from the TypeScript the web app runs, the txids are placeholders. Full expected outputs are in [`examples/testnet/expected/`](examples/testnet/expected/).
+The example is **constructed** (see [What is real](#what-is-real-and-what-is-not)): the charter, amounts and memos come from the TypeScript the web app runs; the txids are placeholders; the members "Rani" and "Tomi" and their keys are made up. Full expected outputs are in [`examples/testnet/expected/`](examples/testnet/expected/).
 
 More to try:
 
 ```bash
 # One order, exact price, and a receipt signed with the example member's TEST key
-cargo run --release -- check --charter examples/testnet/charter.json --snapshot examples/testnet/snapshot.json \
-  --key-file examples/testnet/dex-key.TEST-ONLY.txt --order ord-k7m2qx9p --price 0.003 --receipt receipt.json
+cargo run --release -- check --charter examples/testnet/charter.json --snapshot examples/testnet/snapshot.json   --key-file examples/testnet/member1-key.TEST-ONLY.txt --order ord-k7m2qx9p --price 0.003 --receipt receipt.json
 
-# Anyone in the group can check that receipt offline
+# Anyone in the group can check that receipt offline, against the charter
 cargo run --release -- verify-receipt receipt.json --charter examples/testnet/charter.json
 
-# The same charter, read from a pay link (the charter travels in the #fragment)
-cargo run --release -- check --link "$(cat examples/testnet/paylink.txt)" \
-  --snapshot examples/testnet/snapshot.json --member Dex --order ord-pnd3w8kq
+# The charter read straight from a pay link (it travels in the #fragment); the link's price is checked too
+cargo run --release -- check --link "$(cat examples/testnet/paylink.txt)"   --snapshot examples/testnet/snapshot.json --member Rani --order ord-k7m2qx9p
 ```
 
 ## Check your own share (live)
 
 1. **Export your viewing key.** In your wallet, export the *unified full viewing key* (starts with `uview1`, or `uviewtest1` on testnet) of the account that receives your BonBagi share, and save it in a file, e.g. `ufvk.txt`. A viewing key cannot spend. Never use a seed phrase or spending key here; the watcher refuses anything that is not a UFVK.
-2. **Have your charter.** The pay link of your collective, or the `bonbagi-charter.json` file. If you want a receipt, also your charter private key file (`bonbagi-private-key.txt`, from when you signed).
-3. **Run** (the first run needs `--birthday`: the block height when your wallet was created, or any block before your first BonBagi payment):
+2. **Have your charter.** Your own copy: the `bonbagi-charter.json` you signed, or your collective's pay link. Better still, also pass your charter private key file (`bonbagi-private-key.txt`, from when you signed): then the watcher picks your member slot from your own key instead of trusting `--member`, and can sign a receipt.
+3. **Build the image once** (`docker build -t bonbagi-watcher .` in this repository), then **run** it. The first run needs `--birthday`: the block height when your wallet was created, or any block before your first BonBagi payment.
 
 ```bash
 docker run --rm -v "$PWD:/data" -w /data -e HOME=/data --user "$(id -u):$(id -g)" \
-  ghcr.io/bonbagi/watcher:0.1.0 check \
+  bonbagi-watcher check \
   --link "https://bonbagi.vercel.app/pay.html#c=…" \
   --ufvk-file ufvk.txt --key-file bonbagi-private-key.txt \
   --order ord-k7m2qx9p --birthday <HEIGHT> --receipt receipt.json
@@ -77,12 +75,12 @@ Replace the link, the order and `<HEIGHT>` with yours. A birthday far in the pas
 
 The watch-only wallet is kept in `./bonbagi-watch-<network>-<hash>/`, so later runs only sync new blocks. Add `--connection tor` to hide your IP address from the lightwalletd server. `--json` gives a machine-readable report.
 
-**Leave it watching.** With `--follow 30` the watcher scans again every 30 seconds until your share of `--order` is PAID (or does not match), printing one progress line per scan on stderr, for up to `--max-wait` minutes (default 60). Start it, let the buyer pay, and it tells you when your share has landed.
+**Leave it watching.** With `--follow 30` the watcher scans again every 30 seconds until your share of `--order` is PAID, for up to `--max-wait` minutes (default 60), printing one progress line per scan on stderr. A MISMATCH is shown there and the watch goes on, so a stray output cannot end it. Start it, let the buyer pay, and it tells you when your share has landed.
 
 | Exit status | `check` | `verify-receipt` |
 |---|---|---|
-| `0` | your share arrived and matches the charter | the receipt is valid |
-| `1` | not arrived yet, not found, or does not match | the receipt is invalid |
+| `0` | your share arrived and matches the charter | the receipt is valid for that charter |
+| `1` | not arrived yet, not found, or does not match | invalid, or not verified because no charter was given |
 | `2` | usage, input or network error | usage or input error |
 
 ## What it checks
@@ -92,7 +90,7 @@ The watch-only wallet is kept in `./bonbagi-watch-<network>-<hash>/`, so later r
 | Every member's Ed25519 signature on the charter (ZIP 215 rules, as the web app) | An edited charter (a swapped address, a changed percentage) is refused before anything else. |
 | The memo `bonbagi:v1 o=<order> c=<charter fingerprint> m=<i>/<n>` | Only outputs for *this* charter count; outputs for other collectives are left out. |
 | Member slot: the memo says `m=i/n`, and you are member *i* of *n* | Catches a request whose recipients were swapped (`ord-swapped1` in the example). |
-| Amount: exactly your split of `--price`, or of the pay link's price, or (with no price) a share of *some* total the charter allows | The split is deterministic, so your share of a price can be recomputed anywhere. |
+| Amount: exactly your split of `--price` or of the pay link's price; with no price at all, a share of *some* total the charter allows | The split is deterministic, so your share of a price can be recomputed anywhere. A different amount is never PAID: the watcher says which total it would fit and lets you decide. |
 | Pool: not transparent | A transparent output would make your amount public. |
 | Confirmations against `--min-conf` (default 1) | A broadcast payment is PENDING until it is mined. |
 
@@ -137,7 +135,7 @@ Nothing else is sent: no telemetry, no BonBagi server, no API. The viewing key i
 
 **What it cannot learn:** other members' amounts or whether they were paid (it only sees outputs your key decrypts), who the buyer is, or anything about outputs to anyone else. Each member checks only their own share, which is the point.
 
-**Receipts:** a receipt shows its amount, order, txid and block to whoever you give it to, and nothing more; it is signed with your charter key and does not contain your viewing key. Changing any field breaks the signature (`verify-receipt` says INVALID).
+**Receipts:** a receipt shows its amount, order, txid and block to whoever you give it to, and nothing more; it is signed with your charter key and does not contain your viewing key. Changing any field breaks the signature (`verify-receipt` says INVALID). Anyone can sign *something* with a fresh key, so a receipt only means something next to the charter: without `--charter` or `--link`, `verify-receipt` says NOT VERIFIED and exits 1.
 
 **Trust assumptions and limits:**
 
@@ -154,16 +152,17 @@ Nothing else is sent: no telemetry, no BonBagi server, no API. The viewing key i
 | Real, and how you can check it | Not (yet) real |
 |---|---|
 | The charter rules match the web app byte for byte: 7 conformance tests replay vectors generated from `@bonbagi/core` (canonical bytes, hashes, ZIP 215 signatures and identical Ed25519 signatures, split amounts and error messages, memos, pay links). | The **testnet example is constructed**: real charter, amounts and memos from `@bonbagi/core`, placeholder txids, no real wallet behind it. |
-| The live scan runs end to end on **Zcash testnet** in CI: a fresh viewing key is scanned through a real lightwalletd with `zcash-devtool`, and the watcher answers NOT FOUND, as it must for an empty wallet (`image` workflow, step "live scan on testnet"). | A live scan of a **real BonBagi payment** is not recorded here yet. It needs a member's viewing key of a wallet that was paid; the CI step "recorded live check" runs once those repository variables are set. |
-| 53 tests, golden outputs checked from the release binary and inside the Docker image, gitleaks over the full history. | The image on GHCR becomes pullable without a login when the repository is public. Until then, `docker build -t bonbagi-watcher .` and use `bonbagi-watcher` instead of `ghcr.io/bonbagi/watcher:0.1.0`. |
+| The live scan runs end to end on **Zcash testnet** in CI: a fresh viewing key gets a watch-only wallet, which syncs 100 blocks through `testnet.zec.rocks` with `zcash-devtool` (first run: to block 4,546,540 in 2.2 s), and the watcher answers NOT FOUND, as it must for an empty wallet (`image` workflow, step "live scan on testnet"). | A live scan of a **real BonBagi payment** is not recorded here yet: the live run above saw 0 transactions, so devtool's output for a real payment is covered by a unit test of its format, not by a recording. A recording needs the viewing key of a paid wallet; the CI step "recorded live check" runs once it is set as the repository *secret* `WATCH_UFVK` (only ever for a throwaway testnet wallet). |
+| 57 tests, golden outputs checked from the release binary and inside the Docker image, gitleaks over the full history. | No published image to pull: CI pushes it to a private registry. Build it with `docker build -t bonbagi-watcher .`. |
 
 ## Conformance with the web app
 
 The web app's rules live in TypeScript (`@bonbagi/core`). This repository re-implements the parts a verifier needs in Rust, so two independent implementations must agree. [`conformance/generate.ts`](conformance/generate.ts) runs the TypeScript and writes [`conformance/vectors.json`](conformance/vectors.json); [`tests/vectors.rs`](tests/vectors.rs) replays it. It includes a charter with a decomposed `é` (the signed bytes are NFC) and a tampered charter (both signatures must fail).
 
 ```bash
-node conformance/generate.ts ../core/src > conformance/vectors.json      # a @bonbagi/core checkout after npm ci
-node scripts/make-examples.mjs                                # rebuilds examples/testnet/ from the vectors
+git clone https://github.com/BonBagi/core ../core && (cd ../core && npm ci)
+node conformance/generate.ts ../core/src > conformance/vectors.json   # the TypeScript writes the vectors
+node scripts/make-examples.mjs                                        # rebuilds examples/testnet/ from them
 node conformance/verify-receipt.ts ../core examples/testnet/expected/receipt.json   # a Rust receipt, checked in TypeScript
 ```
 

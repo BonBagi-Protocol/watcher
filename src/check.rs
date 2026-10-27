@@ -162,24 +162,27 @@ pub fn run(p: &Params, view: &View) -> Result<Check, String> {
         let mut totals = None;
         match expected {
             Some((want, price, from)) if o.value_zat != want => {
-                let fits =
-                    totals_for_share(o.value_zat, p.me, &bps, charter.min_share_zat, MAX_ZAT);
-                match (from, fits) {
-                    (PriceFrom::Link, Some(t)) => {
-                        totals = Some(t);
-                        notes.push(format!(
-                            "the buyer paid a total of {} instead of the pay link's {}; your share of that total is right",
-                            show_totals(t, net),
-                            with_ticker(price, net)
-                        ));
-                    }
-                    _ => problems.push(format!(
-                        "expected {} ({}% of {}), got {}",
-                        with_ticker(want, net),
-                        pct(me.bps),
-                        with_ticker(price, net),
-                        with_ticker(o.value_zat, net)
-                    )),
+                // A different amount is never PAID: the member cannot tell an agreed discount
+                // from an underpayment, so the watcher says what fits and lets them decide.
+                let of = match from {
+                    PriceFrom::Flag => with_ticker(price, net),
+                    PriceFrom::Link => format!("the pay link's {}", with_ticker(price, net)),
+                };
+                problems.push(format!(
+                    "expected {} ({}% of {of}), got {}",
+                    with_ticker(want, net),
+                    pct(me.bps),
+                    with_ticker(o.value_zat, net)
+                ));
+                if let Some(t) =
+                    totals_for_share(o.value_zat, p.me, &bps, charter.min_share_zat, MAX_ZAT)
+                {
+                    totals = Some(t);
+                    notes.push(format!(
+                        "that is your share of a {} total; if that was the agreed price, check again with --price {}",
+                        show_totals(t, net),
+                        crate::zec::format_zec(t.0)
+                    ));
                 }
             }
             Some(_) => {}
@@ -366,7 +369,7 @@ mod tests {
         assert_eq!(pct(5), "0.05");
     }
 
-    /// The example charter: member 1 "Dex" 60%, member 2 "Hans" 40%, testnet.
+    /// The example charter: member 1 "Rani" 60%, member 2 "Tomi" 40%, testnet.
     fn verified() -> Verified {
         let text = include_str!("../examples/testnet/charter.json");
         verify(&parse_charter_file(text).unwrap()).unwrap()
@@ -380,7 +383,8 @@ mod tests {
             pool: "Orchard".into(),
             value_zat,
             memo: Some(format!(
-                "bonbagi:v1 o={order} c=a18c7faf6f559412 m={member}/2"
+                "bonbagi:v1 o={order} c={} m={member}/2",
+                verified().fingerprint()
             )),
             expired: false,
         }
@@ -457,21 +461,24 @@ mod tests {
     }
 
     #[test]
-    fn prices_from_a_flag_are_strict_and_from_a_link_are_a_hint() {
+    fn a_different_amount_is_a_mismatch_whatever_the_price_source() {
         let v = verified();
         let paid_less = view(vec![out("ord-1", 1, 60_000, Some(90))]);
         let with = |from| Params {
             price: Some((300_000, from)),
             ..params(&v, Some("ord-1"))
         };
-        // --price 0.003: 0.0006 is not 60% of it.
-        let c = run(&with(PriceFrom::Flag), &paid_less).unwrap();
-        assert_eq!(c.verdict, Verdict::Mismatch);
-        assert!(c.rows[0].problems[0].contains("expected 0.0018 TAZ"));
-        // Pay link price 0.003: the buyer paid 0.001 instead, and 0.0006 is right for that.
-        let c = run(&with(PriceFrom::Link), &paid_less).unwrap();
-        assert_eq!(c.verdict, Verdict::Paid);
-        assert!(c.rows[0].notes[0].contains("0.001 TAZ instead of the pay link's 0.003 TAZ"));
+        // 0.0006 is not 60% of 0.003, whether --price or the pay link said 0.003. It is 60% of
+        // 0.001, which the watcher mentions without deciding it was agreed.
+        for (from, of) in [
+            (PriceFrom::Flag, "of 0.003 TAZ"),
+            (PriceFrom::Link, "of the pay link's 0.003 TAZ"),
+        ] {
+            let c = run(&with(from), &paid_less).unwrap();
+            assert_eq!(c.verdict, Verdict::Mismatch);
+            assert!(c.rows[0].problems[0].contains(&format!("expected 0.0018 TAZ (60% {of})")));
+            assert!(c.rows[0].notes[0].contains("--price 0.001"));
+        }
         // A price this charter cannot split (below the minimum share) is an input error.
         let tiny = Params {
             price: Some((1_000, PriceFrom::Flag)),

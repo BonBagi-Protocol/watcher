@@ -7,12 +7,18 @@
 set -eu
 work=$(mktemp -d)
 cd "$work"
-echo | zcash-devtool wallet -w seed init --name smoke --identity id.txt --network test >/dev/null 2>&1
+if ! echo | zcash-devtool wallet -w seed init --name smoke --identity id.txt --network test >init.log 2>&1; then
+  cat init.log >&2
+  exit 1
+fi
 accounts=$(zcash-devtool wallet -w seed list-accounts)
 birthday=$(printf '%s\n' "$accounts" | sed -n 's/.*(birthday height \([0-9]*\)).*/\1/p' | head -n 1)
 printf '%s\n' "$accounts" | sed -n 's/^ *UFVK: //p' | head -n 1 > ufvk.txt
-rm -rf seed id.txt
-test -n "$birthday" && grep -q '^uviewtest1' ufvk.txt
+rm -rf seed id.txt init.log
+if [ -z "$birthday" ] || ! grep -q '^uviewtest1' ufvk.txt; then
+  echo "live smoke: could not read the new wallet's birthday or viewing key" >&2
+  exit 1
+fi
 
 set +e
 bonbagi-watcher check --charter /work/examples/testnet/charter.json --member 1 \

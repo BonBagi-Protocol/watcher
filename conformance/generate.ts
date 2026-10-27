@@ -51,8 +51,8 @@ const charters: Record<string, any> = {
     title: "Kopi Kita demo",
     minShareZat: "10000",
     members: [
-      { label: "Dex", address: fake("utest", "dex"), bps: 6000, pubkey: keys[0]!.pub },
-      { label: "Hans", address: fake("utest", "hans"), bps: 4000, pubkey: keys[1]!.pub },
+      { label: "Rani", address: fake("utest", "rani"), bps: 6000, pubkey: keys[0]!.pub },
+      { label: "Tomi", address: fake("utest", "tomi"), bps: 4000, pubkey: keys[1]!.pub },
     ],
   },
   // Title in decomposed form (e + combining acute) and a non-ASCII label: canonical bytes are NFC.
@@ -103,7 +103,7 @@ const describe = async (name: string, file: any) => {
   });
 };
 for (const [name, file] of Object.entries(signed)) await describe(name, file);
-// Hans's share edited after signing: both signatures stop verifying.
+// The second member's share edited after signing: both signatures stop verifying.
 const tampered = structuredClone(signed.demo2);
 tampered.charter.members[0].bps = 5999;
 tampered.charter.members[1].bps = 4001;

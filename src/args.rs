@@ -50,8 +50,8 @@ LIVE SCAN (check with --ufvk-file or BONBAGI_UFVK):
                             address from the server.
     --save-snapshot <FILE>  Also write the BonBagi outputs the scan found as a snapshot.
     --follow <SECONDS>      Keep watching --order: scan again every SECONDS until it is PAID
-                            or MISMATCH (progress on stderr). For leaving it running while the
-                            buyer pays.
+                            (progress, including any MISMATCH, on stderr). For leaving it
+                            running while the buyer pays.
     --max-wait <MINUTES>    Stop following after this long [default: 60].
 
 OUTPUT:
@@ -436,7 +436,7 @@ mod tests {
             ..Env::default()
         };
         let Command::Check(c) = parse(
-            &args("check --link https://x/#c=a --member Dex --birthday 5"),
+            &args("check --link https://x/#c=a --member Rani --birthday 5"),
             &env,
         )
         .unwrap() else {
@@ -448,7 +448,7 @@ mod tests {
         assert_eq!(l.ufvk, UfvkFrom::Env);
         assert_eq!(l.devtool, PathBuf::from("/opt/devtool"));
         assert_eq!(l.birthday, Some(5));
-        assert_eq!(c.member, Some(MemberSel::Label("Dex".into())));
+        assert_eq!(c.member, Some(MemberSel::Label("Rani".into())));
         assert_eq!(l.follow, None);
     }
 

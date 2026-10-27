@@ -26,6 +26,14 @@ pub struct Report<'a> {
     pub receipt: ReceiptOutcome,
 }
 
+/// Text from a charter or receipt, safe to print: control characters become "?", so a label
+/// cannot move the cursor or rewrite earlier lines of the report.
+pub fn printable(s: &str) -> String {
+    s.chars()
+        .map(|c| if c.is_control() { '?' } else { c })
+        .collect()
+}
+
 fn short_key(k: &str) -> String {
     format!("{}…{}", &k[..8], &k[k.len() - 4..])
 }
