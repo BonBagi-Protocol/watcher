@@ -1,8 +1,8 @@
 BonBagi watcher 0.1.0 · local check: your viewing key and amounts stay on this machine
-Charter  "Kopi Kita demo" · testnet · a18c7faf6f559412 · signed by 2/2 members
-You      member 1/2 "Dex" · 60% share · key 8a88e3dd…6f5c
+Charter  "Kopi Kita demo" · testnet · 4857f20a3cac5fe5 · signed by 2/2 members
+You      member 1/2 "Rani" · 60% share · key 8a88e3dd…6f5c
 Source   snapshot examples/testnet/snapshot.json · chain tip 4540420
-         Constructed example, not a real wallet: what member 1 (Dex) of charter.json would see. Charter, amounts and memos come from @bonbagi/core (conformance/vectors.json); txids are placeholders.
+         Constructed example, not a real wallet: what member 1 (Rani) of charter.json would see. Charter, amounts and memos come from @bonbagi/core (conformance/vectors.json); txids are placeholders.
 Price    0.003 TAZ (--price) → your share 0.0018 TAZ
 
   order          status            amount     height  conf  txid

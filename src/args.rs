@@ -49,6 +49,10 @@ LIVE SCAN (check with --ufvk-file or BONBAGI_UFVK):
     --connection <MODE>     direct (default), tor, or socks5://host:port. tor hides your IP
                             address from the server.
     --save-snapshot <FILE>  Also write the BonBagi outputs the scan found as a snapshot.
+    --follow <SECONDS>      Keep watching --order: scan again every SECONDS until it is PAID
+                            (progress, including any MISMATCH, on stderr). For leaving it
+                            running while the buyer pays.
+    --max-wait <MINUTES>    Stop following after this long [default: 60].
 
 OUTPUT:
     --json                  Machine-readable report.
@@ -71,6 +75,12 @@ pub enum UfvkFrom {
     Env,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct Follow {
+    pub interval_secs: u64,
+    pub max_wait_mins: u64,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Live {
     pub ufvk: UfvkFrom,
@@ -80,6 +90,7 @@ pub struct Live {
     pub server: Option<String>,
     pub connection: Option<String>,
     pub save_snapshot: Option<PathBuf>,
+    pub follow: Option<Follow>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -148,6 +159,8 @@ struct Flags {
     server: Option<String>,
     connection: Option<String>,
     save_snapshot: Option<String>,
+    follow: Option<String>,
+    max_wait: Option<String>,
     json: bool,
     positional: Vec<String>,
 }
@@ -185,6 +198,8 @@ fn read_flags(args: &[String]) -> Result<Flags, String> {
             "--server" => &mut f.server,
             "--connection" => &mut f.connection,
             "--save-snapshot" => &mut f.save_snapshot,
+            "--follow" => &mut f.follow,
+            "--max-wait" => &mut f.max_wait,
             "--ufvk" => {
                 return Err(
                     "pass the viewing key with --ufvk-file <FILE> or BONBAGI_UFVK, not on \
@@ -227,6 +242,24 @@ fn number<T: std::str::FromStr>(name: &str, v: Option<String>) -> Result<Option<
             .map_err(|_| format!("{name} must be a whole number, got \"{s}\""))
     })
     .transpose()
+}
+
+fn follow(f: &mut Flags) -> Result<Option<Follow>, String> {
+    let interval: Option<u64> = number("--follow", f.follow.take())?;
+    let max_wait: Option<u64> = number("--max-wait", f.max_wait.take())?;
+    match (interval, max_wait) {
+        (None, Some(_)) => Err("--max-wait goes with --follow".into()),
+        (None, None) => Ok(None),
+        (Some(i), _) if i < 5 => Err("--follow must be at least 5 seconds".into()),
+        (Some(_), Some(0)) => Err("--max-wait must be at least 1 minute".into()),
+        (Some(_), _) if f.order.is_none() => {
+            Err("--follow watches one order: pass --order <ID> with it".into())
+        }
+        (Some(i), m) => Ok(Some(Follow {
+            interval_secs: i,
+            max_wait_mins: m.unwrap_or(60),
+        })),
+    }
 }
 
 pub fn parse(args: &[String], env: &Env) -> Result<Command, String> {
@@ -285,6 +318,8 @@ fn parse_check(args: &[String], env: &Env) -> Result<CheckArgs, String> {
         ("--server", f.server.is_some()),
         ("--connection", f.connection.is_some()),
         ("--save-snapshot", f.save_snapshot.is_some()),
+        ("--follow", f.follow.is_some()),
+        ("--max-wait", f.max_wait.is_some()),
     ];
     let view = match (f.snapshot.take(), f.ufvk_file.take()) {
         (Some(_), Some(_)) => {
@@ -323,6 +358,7 @@ fn parse_check(args: &[String], env: &Env) -> Result<CheckArgs, String> {
                 server: f.server.take(),
                 connection: f.connection.take(),
                 save_snapshot: f.save_snapshot.take().map(PathBuf::from),
+                follow: follow(&mut f)?,
             })
         }
     };
@@ -400,7 +436,7 @@ mod tests {
             ..Env::default()
         };
         let Command::Check(c) = parse(
-            &args("check --link https://x/#c=a --member Dex --birthday 5"),
+            &args("check --link https://x/#c=a --member Rani --birthday 5"),
             &env,
         )
         .unwrap() else {
@@ -412,7 +448,38 @@ mod tests {
         assert_eq!(l.ufvk, UfvkFrom::Env);
         assert_eq!(l.devtool, PathBuf::from("/opt/devtool"));
         assert_eq!(l.birthday, Some(5));
-        assert_eq!(c.member, Some(MemberSel::Label("Dex".into())));
+        assert_eq!(c.member, Some(MemberSel::Label("Rani".into())));
+        assert_eq!(l.follow, None);
+    }
+
+    #[test]
+    fn follow_needs_a_live_scan_and_an_order() {
+        let env = Env {
+            ufvk: Some("uviewtest1x".into()),
+            ..Env::default()
+        };
+        let Command::Check(c) = parse(
+            &args("check --charter c --member 1 --order ord-1 --follow 30"),
+            &env,
+        )
+        .unwrap() else {
+            panic!()
+        };
+        let ViewSource::Live(l) = c.view else {
+            panic!()
+        };
+        assert_eq!(
+            l.follow,
+            Some(Follow {
+                interval_secs: 30,
+                max_wait_mins: 60
+            })
+        );
+        let err = |s: &str| parse(&args(s), &env).unwrap_err();
+        assert!(err("check --charter c --member 1 --follow 30").contains("--order"));
+        assert!(err("check --charter c --member 1 --order o --follow 1").contains("5 seconds"));
+        assert!(err("check --charter c --member 1 --order o --max-wait 5").contains("--follow"));
+        assert!(err("check --charter c --snapshot s --order o --follow 30").contains("live"));
     }
 
     #[test]

@@ -6,14 +6,14 @@
     "minShareZat": "10000",
     "members": [
       {
-        "label": "Dex",
-        "address": "utest138l662rss60ru6vz3mj3999pvxvseu3l4y6hmp2mevkvx7gly74l5tlpugtv6tqy9yrmgd4kakfptd8jlsr7vn67r03ls3wv67nu",
+        "label": "Rani",
+        "address": "utest1d6qfpsntx8wx47e4afulwss3y8g74tlhezqfu0ce9hulrc69uzp74u08pc7lt3dxp2skxxcyk8q4h8uqrczgcu4kur4cjgfm7tg2",
         "bps": 6000,
         "pubkey": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c"
       },
       {
-        "label": "Hans",
-        "address": "utest18lm2cahwylrnks0s39n7ah60jpd0x7qmkllyh0kz68rcqsutraqzpyla8qf4pghcrdmqk4gcrmpwprrhl7j93zyfmxsf7p5qyqgc",
+        "label": "Tomi",
+        "address": "utest1ck0y8uljuztvfsrj7edjr9udhljyvrkylx4kczcxxggwhyy260lm4h6hxwyhm4n708z229gac9ug96tuaz4sx32jepgd9k37zjwh",
         "bps": 4000,
         "pubkey": "8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394"
       }
@@ -22,11 +22,11 @@
   "signatures": [
     {
       "pubkey": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c",
-      "sig": "581a860fbdce5af82df6d681dccbe6afa965d1c0a120387682f79ebd288a66d1f49627c98155eafb6048b8aa40ab3f79016d1fe0a1c778112aa583753456d504"
+      "sig": "86dd678acd40a1a6e44f3b6d34ebcf75627c80edae9d0c3785651be4df3c01d0e556e4dee380d9c6eb4ec4bb577e65e90064a989cc98803a5e893b1e60b25003"
     },
     {
       "pubkey": "8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394",
-      "sig": "7b714342b35af495d9e26b9dd1dc218edade082bd5725a17f49f640ebd3d803281c80a6513127d8a257878536fff458abb1364287e4c7d8ed39747e812ce6706"
+      "sig": "82edf6c98f52752f9797ea324187694f1a7631f90d51b9f38fdcc06750f741e04ab9d3df1789b85463974b32a284211521988f79e74e8b241acd42c8222b4403"
     }
   ]
 }

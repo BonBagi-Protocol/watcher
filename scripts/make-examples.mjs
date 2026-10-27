@@ -18,20 +18,20 @@ const paid = v.requests.find((r) => r.charter === "demo2" && r.order === "ord-k7
 const memo = (order, m) => `bonbagi:v1 o=${order} c=${fp} m=${m}/2`;
 
 out("charter.json", JSON.stringify(demo.file, null, 2) + "\n");
-out("dex-key.TEST-ONLY.txt", v.keys[0].priv + "\n");
+out("member1-key.TEST-ONLY.txt", v.keys[0].priv + "\n");
 out("paylink.txt", v.paylinks.find((l) => l.charter === "demo2").url + "\n");
 
 const snapshot = {
   bonbagi_snapshot: 1,
   network: "test",
   tip_height: 4540420,
-  note: "Constructed example, not a real wallet: what member 1 (Dex) of charter.json would see. Charter, amounts and memos come from @bonbagi/core (conformance/vectors.json); txids are placeholders.",
+  note: "Constructed example, not a real wallet: what member 1 (Rani) of charter.json would see. Charter, amounts and memos come from @bonbagi/core (conformance/vectors.json); txids are placeholders.",
   outputs: [
-    // 0.003 TAZ order paid as the pay page builds it: Dex's 60% line of the ZIP-321 request.
+    // 0.003 TAZ order paid as the pay page builds it: member 1's 60% line of the ZIP-321 request.
     { txid: txid("ord-k7m2qx9p"), height: 4540210, output_index: 0, pool: "Ironwood", value_zat: Number(paid.lines[0].amount_zat), memo: paid.lines[0].memo },
     // A 0.001 TAZ order: 60% = 0.0006.
     { txid: txid("ord-9xq2ttmh"), height: 4540388, output_index: 1, pool: "Orchard", value_zat: 60000, memo: memo("ord-9xq2ttmh", 1) },
-    // Addresses swapped by whoever built the request: Hans's output (member 2/2) came to Dex.
+    // Addresses swapped by whoever built the request: member 2's output (m=2/2) came to member 1.
     { txid: txid("ord-swapped1"), height: 4540401, output_index: 0, pool: "Ironwood", value_zat: 120000, memo: memo("ord-swapped1", 2) },
     // Broadcast, not mined yet: 0.0015 TAZ order, 60% = 0.0009.
     { txid: txid("ord-pnd3w8kq"), height: null, output_index: 0, pool: "Ironwood", value_zat: 90000, memo: memo("ord-pnd3w8kq", 1) },

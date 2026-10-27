@@ -1,8 +1,9 @@
 Receipt  examples/testnet/expected/receipt.json
   PASS  signature: signed by key 8a88e3dd…b40f6f5c
-  PASS  charter: receipt is for this charter (a18c7faf6f559412)
-  PASS  member: key is member 1/2 "Dex" of the charter
+  PASS  expected: 0.0018 TAZ arrived, as the receipt states
+  PASS  charter: receipt is for this charter (4857f20a3cac5fe5)
+  PASS  member: key is member 1/2 "Rani" of the charter
   PASS  network: testnet
-  PASS  amount: 0.0018 TAZ fits a 60% share
+  PASS  share: 0.0018 TAZ fits a 60% share
 
-=> VALID: member 1/2 "Dex" confirms 0.0018 TAZ for order ord-k7m2qx9p (tx 95ad566a4093ec8b…, block 4540210, checked 2026-10-27T05:40:00Z).
+=> VALID: member 1/2 "Rani" confirms 0.0018 TAZ for order ord-k7m2qx9p (tx 95ad566a4093ec8b…, block 4540210, checked 2026-10-27T05:40:00Z).

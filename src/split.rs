@@ -112,8 +112,8 @@ mod tests {
             totals_for_share(180_000, 0, &bps, 10_000, u64::MAX),
             Some((300_000, 300_000, 1))
         );
-        // 120,000 is Hans's share of 299,999 (he gets the leftover zatoshi), of 300,000, and of
-        // 300,001 (the leftover goes to Dex).
+        // 120,000 is member 2's 40% share of 299,999 (it gets the leftover zatoshi), of 300,000,
+        // and of 300,001 (the leftover goes to member 1).
         assert_eq!(
             totals_for_share(120_000, 1, &bps, 10_000, u64::MAX),
             Some((299_999, 300_001, 3))

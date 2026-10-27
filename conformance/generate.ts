@@ -3,10 +3,10 @@
 // charter hash, ZIP-215 signature checks, the zatoshi split, the memo and the pay link) and its
 // tests replay these vectors, so the two implementations cannot drift apart unnoticed.
 //
-//   node conformance/generate.ts <path to the core's src/ directory> > conformance/vectors.json
+//   node conformance/generate.ts ../core/src > conformance/vectors.json
 //
 // The core imports @noble/ed25519, so run it from a checkout where that package is installed
-// (for example the BonBagi app repository after `npm ci`). Everything here is deterministic:
+// (a BonBagi/core checkout after `npm ci`). Everything here is deterministic:
 // fixed private keys, fixed order IDs, fixed prices.
 
 import { join } from "node:path";
@@ -51,8 +51,8 @@ const charters: Record<string, any> = {
     title: "Kopi Kita demo",
     minShareZat: "10000",
     members: [
-      { label: "Dex", address: fake("utest", "dex"), bps: 6000, pubkey: keys[0]!.pub },
-      { label: "Hans", address: fake("utest", "hans"), bps: 4000, pubkey: keys[1]!.pub },
+      { label: "Rani", address: fake("utest", "rani"), bps: 6000, pubkey: keys[0]!.pub },
+      { label: "Tomi", address: fake("utest", "tomi"), bps: 4000, pubkey: keys[1]!.pub },
     ],
   },
   // Title in decomposed form (e + combining acute) and a non-ASCII label: canonical bytes are NFC.
@@ -103,7 +103,7 @@ const describe = async (name: string, file: any) => {
   });
 };
 for (const [name, file] of Object.entries(signed)) await describe(name, file);
-// Hans's share edited after signing: both signatures stop verifying.
+// The second member's share edited after signing: both signatures stop verifying.
 const tampered = structuredClone(signed.demo2);
 tampered.charter.members[0].bps = 5999;
 tampered.charter.members[1].bps = 4001;

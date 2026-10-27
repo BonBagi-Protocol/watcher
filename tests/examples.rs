@@ -60,7 +60,7 @@ fn every_payment_to_member_one() {
 #[test]
 fn one_order_paid_exactly() {
     let cmd = format!(
-        "check {} --key-file {E}/dex-key.TEST-ONLY.txt --order ord-k7m2qx9p --price 0.003",
+        "check {} --key-file {E}/member1-key.TEST-ONLY.txt --order ord-k7m2qx9p --price 0.003",
         charter()
     );
     let (code, out, _) = run(&cmd);
@@ -77,7 +77,7 @@ fn the_receipt_is_reproducible_and_verifies() {
     std::fs::create_dir_all(&dir).unwrap();
     let file = dir.join("receipt.json");
     let cmd = format!(
-        "check {} --key-file {E}/dex-key.TEST-ONLY.txt --order ord-k7m2qx9p --price 0.003 --receipt {}",
+        "check {} --key-file {E}/member1-key.TEST-ONLY.txt --order ord-k7m2qx9p --price 0.003 --receipt {}",
         charter(),
         file.display()
     );
@@ -107,14 +107,47 @@ fn a_changed_receipt_is_invalid() {
 }
 
 #[test]
-fn a_pending_order_from_a_pay_link() {
+fn an_order_paid_through_a_pay_link() {
     let link = std::fs::read_to_string(root().join(E).join("paylink.txt")).unwrap();
     let (code, out, _) = run(&format!(
-        "check --link {} --snapshot {E}/snapshot.json --member Dex --order ord-pnd3w8kq",
+        "check --link {} --snapshot {E}/snapshot.json --member Rani --order ord-k7m2qx9p",
+        link.trim()
+    ));
+    assert_eq!(code, 0);
+    golden("link-paid.txt", &out);
+}
+
+#[test]
+fn a_pay_link_price_is_checked_exactly() {
+    // The link asks 0.003; this order paid member 1 0.0006, which is 60% of 0.001. Never PAID:
+    // the watcher cannot tell a discount from an underpayment, so it says what would fit.
+    let link = std::fs::read_to_string(root().join(E).join("paylink.txt")).unwrap();
+    let (code, out, _) = run(&format!(
+        "check --link {} --snapshot {E}/snapshot.json --member 1 --order ord-9xq2ttmh",
         link.trim()
     ));
     assert_eq!(code, 1);
-    golden("link-pending.txt", &out);
+    assert!(out.contains("expected 0.0018 TAZ (60% of the pay link's 0.003 TAZ), got 0.0006 TAZ"));
+    assert!(out.contains("check again with --price 0.001"));
+}
+
+#[test]
+fn a_pending_order() {
+    let (code, out, _) = run(&format!(
+        "check {} --member 1 --order ord-pnd3w8kq",
+        charter()
+    ));
+    assert_eq!(code, 1);
+    golden("pending.txt", &out);
+}
+
+#[test]
+fn a_receipt_without_the_charter_is_not_verified() {
+    // Anyone can sign a receipt with a fresh key; only the charter says whose key is whose.
+    let (code, out, _) = run(&format!("verify-receipt {E}/expected/receipt.json"));
+    assert_eq!(code, 1);
+    assert!(out.contains("PASS  signature") && out.contains("FAIL  charter: not given"));
+    assert!(out.contains("NOT VERIFIED"));
 }
 
 #[test]
@@ -153,7 +186,7 @@ fn input_errors_exit_2() {
     ));
     assert_eq!(code, 2);
     assert!(
-        err.contains("not signed by every member (missing or invalid: Dex, Hans)"),
+        err.contains("not signed by every member (missing or invalid: Rani, Tomi)"),
         "{err}"
     );
 
@@ -161,13 +194,13 @@ fn input_errors_exit_2() {
     assert_eq!(code, 2);
     assert!(err.contains("members 1 to 2"));
 
-    // Hans's key is not Dex: a key and a member number that disagree are refused.
-    let hans = std::env::temp_dir().join("bonbagi-watcher-hans-key.txt");
-    std::fs::write(&hans, "02".repeat(32)).unwrap();
+    // Member 2's key with --member 1: a key and a member number that disagree are refused.
+    let second = std::env::temp_dir().join("bonbagi-watcher-hans-key.txt");
+    std::fs::write(&second, "02".repeat(32)).unwrap();
     let (code, _, err) = run(&format!(
         "check {} --member 1 --key-file {}",
         charter(),
-        hans.display()
+        second.display()
     ));
     assert_eq!(code, 2);
     assert!(err.contains("the key file is member 2"));
@@ -186,7 +219,7 @@ fn every_example_file_is_where_the_readme_says() {
         "charter.json",
         "snapshot.json",
         "paylink.txt",
-        "dex-key.TEST-ONLY.txt",
+        "member1-key.TEST-ONLY.txt",
     ] {
         assert!(Path::new(&root().join(E).join(f)).is_file(), "{f}");
     }
