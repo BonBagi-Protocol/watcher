@@ -17,7 +17,7 @@ Receipt  receipt.json · signed with key 8a88e3dd…6f5c
 Offline, on the bundled testnet example (no wallet, no network, no keys of yours). With Rust 1.99 (the first build takes about a minute):
 
 ```bash
-git clone https://github.com/BonBagi/watcher && cd watcher
+git clone https://github.com/BonBagi-Protocol/watcher && cd watcher
 cargo run --release -- check --charter examples/testnet/charter.json --snapshot examples/testnet/snapshot.json --member 1
 ```
 
@@ -160,7 +160,7 @@ Nothing else is sent: no telemetry, no BonBagi server, no API. The viewing key i
 The web app's rules live in TypeScript (`@bonbagi/core`). This repository re-implements the parts a verifier needs in Rust, so two independent implementations must agree. [`conformance/generate.ts`](conformance/generate.ts) runs the TypeScript and writes [`conformance/vectors.json`](conformance/vectors.json); [`tests/vectors.rs`](tests/vectors.rs) replays it. It includes a charter with a decomposed `é` (the signed bytes are NFC) and a tampered charter (both signatures must fail).
 
 ```bash
-git clone https://github.com/BonBagi/core ../core && (cd ../core && npm ci)
+git clone https://github.com/BonBagi-Protocol/core ../core && (cd ../core && npm ci)
 node conformance/generate.ts ../core/src > conformance/vectors.json   # the TypeScript writes the vectors
 node scripts/make-examples.mjs                                        # rebuilds examples/testnet/ from them
 node conformance/verify-receipt.ts ../core examples/testnet/expected/receipt.json   # a Rust receipt, checked in TypeScript
@@ -179,4 +179,4 @@ CI: [`ci.yml`](.github/workflows/ci.yml) (fmt, clippy `-D warnings`, tests, rele
 
 ## License
 
-MIT. Part of [BonBagi](https://github.com/BonBagi), built for ZECATHON 2026 (Shielded Payments).
+MIT. Part of [BonBagi](https://github.com/BonBagi-Protocol), built for ZECATHON 2026 (Shielded Payments).

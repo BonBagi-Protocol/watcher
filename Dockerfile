@@ -31,7 +31,7 @@ COPY --from=devtool /usr/local/cargo/bin/zcash-devtool /usr/local/bin/zcash-devt
 COPY --from=watcher /out/bin/bonbagi-watcher /usr/local/bin/bonbagi-watcher
 COPY --chmod=755 scripts/live-smoke.sh /usr/local/bin/live-smoke
 COPY --chown=watcher:watcher examples /work/examples
-LABEL org.opencontainers.image.source="https://github.com/BonBagi/watcher" \
+LABEL org.opencontainers.image.source="https://github.com/BonBagi-Protocol/watcher" \
       org.opencontainers.image.description="BonBagi watcher: check your own share of a BonBagi payment with your own viewing key" \
       org.opencontainers.image.licenses="MIT"
 WORKDIR /work

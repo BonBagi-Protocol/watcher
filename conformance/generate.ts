@@ -6,7 +6,7 @@
 //   node conformance/generate.ts ../core/src > conformance/vectors.json
 //
 // The core imports @noble/ed25519, so run it from a checkout where that package is installed
-// (a BonBagi/core checkout after `npm ci`). Everything here is deterministic:
+// (a BonBagi-Protocol/core checkout after `npm ci`). Everything here is deterministic:
 // fixed private keys, fixed order IDs, fixed prices.
 
 import { join } from "node:path";

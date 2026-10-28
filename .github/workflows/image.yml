@@ -19,7 +19,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  IMAGE: ghcr.io/bonbagi/watcher
+  IMAGE: ghcr.io/bonbagi-protocol/watcher
 
 jobs:
   image:
